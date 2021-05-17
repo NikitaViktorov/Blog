@@ -14,6 +14,7 @@ namespace BLL.Sevices
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+
         public ArticleService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;

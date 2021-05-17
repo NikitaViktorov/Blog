@@ -1,5 +1,7 @@
 ﻿using BLL.DTOs;
+using BLL.Exceptions;
 using BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -19,15 +21,16 @@ namespace Blog.Controllers
             _articleService = articleService;
         }
         [HttpGet]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> GetArticles()
         {
             try
             {
                 return Ok(await _articleService.GetAll());
             }
-            catch (Exception ex)
+            catch (ArticleException ex)
             {
-                return Problem(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
         [Route("GetArticle/{id}")]
@@ -38,9 +41,9 @@ namespace Blog.Controllers
             {
                 return Ok(await _articleService.Get(id));
             }
-            catch (Exception ex)
+            catch (ArticleException ex)
             {
-                return Problem(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
         [Route("ArticlesByTag/{id}")]
@@ -51,12 +54,13 @@ namespace Blog.Controllers
             {
                 return Ok(await _articleService.GetArticlesByTag(id));
             }
-            catch (Exception ex)
+            catch (ArticleException ex)
             {
-                return Problem(ex.Message);
+                return BadRequest(ex.Message);
             }
 
         }
+
         [Route("CreateArticle")]
         [HttpPost]
         public async Task<IActionResult> CreateArticle([FromBody] ArticleDTO articleDTO)
@@ -67,9 +71,9 @@ namespace Blog.Controllers
                 await _articleService.Create(articleDTO);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ArticleException ex)
             {
-                return Problem(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
         [HttpPut("{id}")]
@@ -80,9 +84,9 @@ namespace Blog.Controllers
                 await _articleService.Update(id, articleDTO);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ArticleException ex)
             {
-                return Problem(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 

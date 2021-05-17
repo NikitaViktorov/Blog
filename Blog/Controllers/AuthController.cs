@@ -64,7 +64,7 @@ namespace Blog.Controllers
             claims.Add(new Claim("Password", userDTO.Password));
             claims.Add(new Claim("Name", userDTO.Name));
             claims.Add(new Claim("Surname", userDTO.Surname));
-            claims.Add(new Claim("Role", userDTO.Role.ToString()));
+            claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, userDTO.Role.ToString()));
 
             var token = new JwtSecurityToken(authParams.Issuer,
                 authParams.Audience,
