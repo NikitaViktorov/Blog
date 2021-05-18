@@ -1,4 +1,5 @@
 ﻿using BLL.DTOs;
+using BLL.Exceptions;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -24,7 +25,7 @@ namespace Blog.Controllers
             {
                 return Ok(await _tagService.Get(id));
             }
-            catch (Exception ex)
+            catch (TagException ex)
             {
                 return Problem(ex.Message);
             }
@@ -41,7 +42,7 @@ namespace Blog.Controllers
                 return Problem(ex.Message);
             }
         }
-
+        [Route("CreateTag")]
         [HttpPost]
         public async Task<IActionResult> CreateTag([FromBody] TagDTO tagDTO)
         {
@@ -50,12 +51,13 @@ namespace Blog.Controllers
                 await _tagService.Create(tagDTO);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (TagException ex)
             {
                 return Problem(ex.Message);
             }
         }
-        [HttpPut("{id}")]
+        [Route("UpdateTag/{id}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateTag([FromRoute] Guid id, [FromBody] TagDTO tagDTO)
         {
             try
@@ -63,7 +65,7 @@ namespace Blog.Controllers
                 await _tagService.Update(id, tagDTO);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (TagException ex)
             {
                 return Problem(ex.Message);
             }
@@ -77,7 +79,7 @@ namespace Blog.Controllers
                 await _tagService.Delete(id);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (TagException ex)
             {
                 return Problem(ex.Message);
             }

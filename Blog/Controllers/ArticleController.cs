@@ -21,6 +21,7 @@ namespace Blog.Controllers
             _articleService = articleService;
         }
         [HttpGet]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> GetArticles()
         {
             try

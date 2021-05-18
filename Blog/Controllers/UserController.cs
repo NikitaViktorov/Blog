@@ -1,4 +1,5 @@
 ﻿using BLL.DTOs;
+using BLL.Exceptions;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,7 +23,7 @@ namespace Blog.Controllers
             {
                 return Ok(await _userService.GetAll());
             }
-            catch (Exception ex)
+            catch (UserException ex)
             {
                 return Problem(ex.Message);
             }
@@ -34,11 +35,12 @@ namespace Blog.Controllers
             {
                 return Ok(await _userService.Get(id));
             }
-            catch (Exception ex)
+            catch (UserException ex)
             {
                 return Problem(ex.Message);
             }
         }
+        [Route("CreateUser")]
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] UserDTO userDTO)
         {
@@ -47,12 +49,13 @@ namespace Blog.Controllers
                 await _userService.Create(userDTO);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (UserException ex)
             {
                 return Problem(ex.Message);
             }
         }
-        [HttpPut("{id}")]
+        [Route("UpdateUser/{id}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateUser([FromRoute] Guid id, [FromBody] UserDTO userDTO)
         {
             try
@@ -60,9 +63,23 @@ namespace Blog.Controllers
                 await _userService.Update(id, userDTO);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (UserException ex)
             {
                 return Problem(ex.Message);
+            }
+        }
+        [Route("DeleteUser/{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser([FromRoute] Guid id)
+        {
+            try
+            {
+                await _userService.Delete(id);
+                return Ok();
+            }
+            catch(UserException ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

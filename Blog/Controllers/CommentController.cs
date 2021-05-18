@@ -1,4 +1,5 @@
 ﻿using BLL.DTOs;
+using BLL.Exceptions;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -35,7 +36,7 @@ namespace Blog.Controllers
             {
                 return Ok(await _commentService.Get(id));
             }
-            catch (Exception ex)
+            catch (CommentException ex)
             {
                 return Problem(ex.Message);
             }
@@ -50,13 +51,13 @@ namespace Blog.Controllers
                 await _commentService.Create(title, commentDTO);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (CommentException ex)
             {
                 return Problem(ex.Message);
             }
         }
-
-        [HttpPut("{id}")]
+        [Route("UpdateComment/{id}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateComment([FromRoute] Guid id, [FromBody] CommentDTO commentDTO)
         {
             try
@@ -64,7 +65,7 @@ namespace Blog.Controllers
                 await _commentService.Update(id, commentDTO);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (CommentException ex)
             {
                 return Problem(ex.Message);
             }
@@ -78,7 +79,7 @@ namespace Blog.Controllers
                 await _commentService.Delete(id);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (CommentException ex)
             {
                 return Problem(ex.Message);
             }
