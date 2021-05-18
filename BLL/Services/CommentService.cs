@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BLL.AutoMapper;
 using BLL.DTOs;
 using BLL.Exceptions;
 using BLL.Interfaces;
@@ -17,13 +18,14 @@ namespace BLL.Sevices
         public CommentService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<Tag, TagDTO>().ReverseMap();
-                cfg.CreateMap<Article, ArticleDTO>().ReverseMap();
-                cfg.CreateMap<User, UserDTO>().ReverseMap();
-                cfg.CreateMap<Comment, CommentDTO>().ReverseMap();
-            }).CreateMapper();
+            //_mapper = new MapperConfiguration(cfg =>
+            //{
+            //    cfg.CreateMap<Tag, TagDTO>().ReverseMap();
+            //    cfg.CreateMap<Article, ArticleDTO>().ReverseMap();
+            //    cfg.CreateMap<User, UserDTO>().ReverseMap();
+            //    cfg.CreateMap<Comment, CommentDTO>().ReverseMap();
+            //}).CreateMapper();
+            _mapper = AutoMapperProfile.InitializeAutoMapper().CreateMapper();
         }
         //public async Task Create(CommentDTO commentDTO)
         //{
@@ -49,7 +51,7 @@ namespace BLL.Sevices
                 throw new CommentException("Article doesn't exist.You don't create commentary because of that!");
             //var config = new MapperConfiguration(cfg => cfg.CreateMap<CommentDTO, Comment>());
             //var mapper = new Mapper(config);
-            var comment = _mapper.Map<CommentDTO, Comment>(commentDTO);
+            var comment = _mapper.Map<Comment>(commentDTO);
             comment.Article = article;
             //var article = await unitOfWork.Articles.Get(commentDTO.ArticleId);
             //comment.Article = article;
@@ -69,16 +71,16 @@ namespace BLL.Sevices
                 throw new CommentException("Commentar doesn't exist");
             //var config = new MapperConfiguration(cfg => cfg.CreateMap<Comment,CommentDTO>());
             //var mapper = new Mapper(config);
-            return _mapper.Map<Comment, CommentDTO>(await _unitOfWork.Comments.Get(id));
+            return _mapper.Map<CommentDTO>(await _unitOfWork.Comments.Get(id));
         }
 
         public async Task<ICollection<CommentDTO>> GetAll()
         {
             //var config = new MapperConfiguration(cfg => cfg.CreateMap<Comment,CommentDTO>());
             //var mapper = new Mapper(config);
-            if (_mapper.Map<ICollection<Comment>, ICollection<CommentDTO>>(await _unitOfWork.Comments.GetAll()).Count == 0)
+            if (_mapper.Map<ICollection<CommentDTO>>(await _unitOfWork.Comments.GetAll()).Count == 0)
                 throw new CommentException("List of commentaries is empty");
-            return _mapper.Map<ICollection<Comment>, ICollection<CommentDTO>>(await _unitOfWork.Comments.GetAll());
+            return _mapper.Map<ICollection<CommentDTO>>(await _unitOfWork.Comments.GetAll());
         }
 
         public async Task Update(Guid id, CommentDTO commentDTO)
@@ -87,7 +89,7 @@ namespace BLL.Sevices
                 throw new CommentException("You can't update this comment.Because commentary doen't exist!");
             //var config = new MapperConfiguration(cfg => cfg.CreateMap<CommentDTO, Comment>());
             //var mapper = new Mapper(config);
-            var updateComment = _mapper.Map<CommentDTO, Comment>(commentDTO);
+            var updateComment = _mapper.Map<Comment>(commentDTO);
             updateComment.Id = id;
             await _unitOfWork.Comments.Update(updateComment);
         }

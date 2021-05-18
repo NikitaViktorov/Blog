@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BLL.Exceptions;
+using BLL.AutoMapper;
 
 namespace BLL.Sevices
 {
@@ -18,20 +19,21 @@ namespace BLL.Sevices
         public ArticleService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<Tag, TagDTO>().ReverseMap();
-                cfg.CreateMap<Article, ArticleDTO>().ReverseMap();
-                cfg.CreateMap<User, UserDTO>().ReverseMap();
-                cfg.CreateMap<Comment, CommentDTO>().ReverseMap();
-            }).CreateMapper();
+            //_mapper = new MapperConfiguration(cfg =>
+            //{
+            //    cfg.CreateMap<Tag, TagDTO>().ReverseMap();
+            //    cfg.CreateMap<Article, ArticleDTO>().ReverseMap();
+            //    cfg.CreateMap<User, UserDTO>().ReverseMap();
+            //    cfg.CreateMap<Comment, CommentDTO>().ReverseMap();
+            //}).CreateMapper();
+            _mapper = AutoMapperProfile.InitializeAutoMapper().CreateMapper();
         }
 
         public async Task Create(ArticleDTO articleDTO)
         {
             //var configArticle = new MapperConfiguration(cfg => cfg.CreateMap<ArticleDTO, Article>()); 
             //var mapperArticle = new Mapper(configArticle);
-            var article = _mapper.Map<ArticleDTO, Article>(articleDTO);
+            var article = _mapper.Map<Article>(articleDTO);
             //var configTag = new MapperConfiguration(cfg => cfg.CreateMap<TagDTO, Tag>());
             //var mapperTag = new Mapper(configTag);
             //article.Tags = mapperTag.Map<IEnumerable<TagDTO>, IEnumerable<Tag>>(tagDTOs);
@@ -87,25 +89,25 @@ namespace BLL.Sevices
         {
             //var config = new MapperConfiguration(cfg => cfg.CreateMap<Article,ArticleDTO>());
             //var mapper = new Mapper(config);
-            if (_mapper.Map<Article, ArticleDTO>(await _unitOfWork.Articles.Get(id)) == null)
+            if (_mapper.Map<ArticleDTO>(await _unitOfWork.Articles.Get(id)) == null)
                 throw new ArticleException("Article doesn't exist");
-            return _mapper.Map<Article, ArticleDTO>(await _unitOfWork.Articles.Get(id));
+            return _mapper.Map<ArticleDTO>(await _unitOfWork.Articles.Get(id));
         }
 
         public async Task<ICollection<ArticleDTO>> GetAll()
         {
             //var config = new MapperConfiguration(cfg => cfg.CreateMap<Article, ArticleDTO>());
             //var mapper = new Mapper(config);
-            if (_mapper.Map<ICollection<Article>, ICollection<ArticleDTO>>(await _unitOfWork.Articles.GetAll()).Count == 0)
+            if (_mapper.Map<ICollection<ArticleDTO>>(await _unitOfWork.Articles.GetAll()).Count == 0)
                 throw new ArticleException("List of tags is empty!");
-            return _mapper.Map<ICollection<Article>, ICollection<ArticleDTO>>(await _unitOfWork.Articles.GetAll());
+            return _mapper.Map<ICollection<ArticleDTO>>(await _unitOfWork.Articles.GetAll());
 
         }
         public async Task<ICollection<ArticleDTO>> GetArticlesByTag(Guid id)
         {
-            if (_mapper.Map<ICollection<Article>, ICollection<ArticleDTO>>(await _unitOfWork.Articles.GetAll()).Count == 0)
+            if (_mapper.Map<ICollection<ArticleDTO>>(await _unitOfWork.Articles.GetAll()).Count == 0)
                 throw new ArticleException("List of tags is empty!");
-            return _mapper.Map<ICollection<Article>, ICollection<ArticleDTO>>(await _unitOfWork.Articles.GetArticlesByTag(id));
+            return _mapper.Map<ICollection<ArticleDTO>>(await _unitOfWork.Articles.GetArticlesByTag(id));
         }
         public async Task Update(Guid id, ArticleDTO articleDTO)
         {
@@ -114,7 +116,7 @@ namespace BLL.Sevices
                 throw new ArticleException("Article doesn't exist!");
             //var config = new MapperConfiguration(cfg => cfg.CreateMap<ArticleDTO, Article>());
             //var mapper = new Mapper(config);
-            var updateArticle = _mapper.Map<ArticleDTO, Article>(articleDTO);
+            var updateArticle = _mapper.Map<Article>(articleDTO);
             updateArticle.Id = id;
             await _unitOfWork.Articles.Update(updateArticle);
         }
