@@ -28,16 +28,6 @@ namespace DAL.EF
                         x => (Role)Enum.Parse(typeof(Role), x));
             });
 
-            //modelBuilder.Entity<Article>()
-            //    .HasOne(s => s.Tag)
-            //    .WithMany(g => g.Articles);
-            
-
-
-            //modelBuilder.Entity<Article>()
-            //    .HasOne(s => s.User)
-            //    .WithMany(g => g.Articles);
-
             User user = new User
             {
                 Id = Guid.NewGuid(),

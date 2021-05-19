@@ -11,7 +11,8 @@ namespace BLL.Interfaces
         Task Delete(Guid id);
         Task<ArticleDTO> Get(Guid id);
         Task<ICollection<ArticleDTO>> GetAll();
-        Task<ICollection<ArticleDTO>> GetArticlesByTag(Guid id);
+        //Task<ICollection<ArticleDTO>> GetArticlesByTag(Guid id);
+        Task<ICollection<ArticleDTO>> GetArticlesByTag(List<TagDTO> articles);
         Task Update(Guid id, ArticleDTO articleDTO);
         Task AddTag(Guid Article, TagDTO tagDTO);
         Task<ArticleDTO> GetArticleByText(string text);

@@ -1,8 +1,10 @@
 ﻿using BLL.DTOs;
 using BLL.Exceptions;
 using BLL.Interfaces;
+using Blog.Shells;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -45,13 +47,13 @@ namespace Blog.Controllers
                 return NotFound(ex.Message);
             }
         }
-        [Route("ArticlesByTag/{id}")]
+        [Route("GetArticlesByTag")]
         [HttpGet]
-        public async Task<IActionResult> GetArticlesByTag([FromRoute] Guid id)
+        public async Task<IActionResult> GetArticlesByTag([FromBody] TagAdd tagAdd)
         {
             try
             {
-                return Ok(await _articleService.GetArticlesByTag(id));
+                return Ok(await _articleService.GetArticlesByTag(tagAdd.Tags));
             }
             catch (ArticleException ex)
             {
@@ -61,11 +63,11 @@ namespace Blog.Controllers
 
         [Route("GetArticleByText")]
         [HttpGet]
-        public async Task<IActionResult> GetArticlesByText([FromBody] string text)
+        public async Task<IActionResult> GetArticlesByText([FromBody] TextAdd textAdd)
         {
             try
             {
-                return Ok(await _articleService.GetArticleByText(text));
+                return Ok(await _articleService.GetArticleByText(textAdd.Text));
             }
             catch (ArticleException ex)
             {
@@ -112,7 +114,7 @@ namespace Blog.Controllers
             }
             catch (ArticleException ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex.Message); 
             }
         }
 

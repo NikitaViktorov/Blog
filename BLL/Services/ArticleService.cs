@@ -24,33 +24,16 @@ namespace BLL.Sevices
 
         public async Task AddTag(Guid ArticleId,TagDTO tagDTO)
         {
-            /*Tag tag = null*/;
+           
             var article = await _unitOfWork.Articles.Get(ArticleId);
-            //var tag = await _unitOfWork.Tags.Get(tagDTO.Id);
+            
             if (article == null) throw new ArticleException("Article doesn't exist");
 
             article.Tags.Add(_mapper.Map<Tag>(tagDTO));
-            //if (await _unitOfWork.Tags.Get(tagDTO.Id) == null)
-            //{
-            //    tag = _mapper.Map<Tag>(tagDTO); 
-            //    await _unitOfWork.Tags.Create(tag);
-            //}
-            //else
-            //{
-            //    tag = _mapper.Map<Tag>(tagDTO);
-            //}
-                
-            //var article = await _unitOfWork.Articles.Get(ArticleId);
-            //article.Tags.Add(_mapper.Map<Tag>(tag));
-
-            
         }
 
         public async Task Create(ArticleDTO articleDTO)
         {
-            //if (await _unitOfWork.Tags.Get(articleDTO.TagId) == null) throw new ArticleException("You don't create article,because the article doen't exist");
-            //else if(await _unitOfWork.Users.Get(articleDTO.UserId) == null) throw new ArticleException("You don't create article,because the user doen't exist");
-            //else
             await _unitOfWork.Articles.Create(_mapper.Map<Article>(articleDTO));
         }
         public async Task Delete(Guid id)
@@ -81,12 +64,36 @@ namespace BLL.Sevices
             return _mapper.Map<ArticleDTO>(article);
         }
 
-        public async Task<ICollection<ArticleDTO>> GetArticlesByTag(Guid id)
+        public async Task<ICollection<ArticleDTO>> GetArticlesByTag(List<TagDTO> articles)
         {
-            var articles = await _unitOfWork.Articles.GetArticlesByTag(id) ?? throw new ArticleException("List of tags is empty!");
+            var newArticles = _mapper.Map<List<Tag>>(articles);
 
-            return _mapper.Map<ICollection<ArticleDTO>>(articles);
+            var returnedArticles = await _unitOfWork.Articles.GetArticlesByTag(newArticles);
+
+            if(returnedArticles == null) throw new ArticleException("Articles don't exist");
+
+            return _mapper.Map<List<ArticleDTO>>(returnedArticles);
         }
+
+        //public async Task<ICollection<ArticleDTO>> GetArticlesByTag(List<TagDTO> articles)
+        //{
+        //    var newArticles = _mapper.Map<List<Tag>>(articles);
+
+        //    var returnedArticles = await _unitOfWork.Articles.GetArticlesByTag(newArticles);
+
+        //    if(returnedArticles == null) throw new ArticleException("Articles don't exist");
+
+        //    return _mapper.Map<List<ArticleDTO>>(returnedArticles);
+        //}
+
+
+
+        //public async Task<ICollection<ArticleDTO>> GetArticlesByTag(Guid id)
+        //{
+        //    var articles = await _unitOfWork.Articles.GetArticlesByTag(id) ?? throw new ArticleException("List of tags is empty!");
+
+        //    return _mapper.Map<ICollection<ArticleDTO>>(articles);
+        //}
         public async Task Update(Guid id, ArticleDTO articleDTO)
         {
             var article = await _unitOfWork.Articles.Get(id) ?? throw new ArticleException("Article doesn't exist!");
