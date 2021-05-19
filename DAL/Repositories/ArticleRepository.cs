@@ -19,6 +19,7 @@ namespace DAL.Repositories
         public async Task Create(Article item)
         {
             await _db.Articles.AddAsync(item);
+
             await _db.SaveChangesAsync();
 
         }
@@ -30,28 +31,33 @@ namespace DAL.Repositories
         }
         public async Task<Article> Get(Guid id)
         {
-            var article = await _db.Articles.Include(c => c.User).ThenInclude(c => c.Articles).Include(c => c.Tag).ThenInclude(c => c.Articles).Include(c => c.Comments).FirstOrDefaultAsync(a => a.Id == id);
+            var article = await _db.Articles.Include(c => c.User).ThenInclude(c => c.Articles).Include(c => c.Tags).ThenInclude(c => c.Articles).Include(c => c.Comments).FirstOrDefaultAsync(a => a.Id == id);
              
             return article == null ? null : article;
         }
+        
         public async Task<ICollection<Article>> GetAll()
         {
-            var articles = await _db.Articles.Include(c => c.User).Include(c => c.Comments).Include(s => s.Tag).ThenInclude(c => c.Articles).ToListAsync();
+            var articles = await _db.Articles.Include(c => c.User).Include(c => c.Comments).Include(s => s.Tags).ThenInclude(c => c.Articles).ToListAsync();
 
             return articles.Count == 0 ? null : articles;
         }
         public async Task<ICollection<Article>> GetArticlesByTag(Guid id)
         {
             var tag = await _db.Tags.FindAsync(id);
-            var articles = await _db.Articles.Include(x => x.Comments).Include(x => x.User).Include(x => x.Tag).ToListAsync();
-            var result = articles.Where(x => x.Tag == tag);
+
+            var articles = await _db.Articles.Include(x => x.Comments).Include(x => x.User).Include(x => x.Tags).ToListAsync();
+
+            var result = articles.Where(x => x.Tags.Contains(tag));
 
             return result.Count() == 0 ? null : result.ToList();
         }
         public async Task Update(Article item)
         {
             _db.Articles.Remove(await _db.Articles.FirstAsync(a => a.Id == item.Id));
+
             await _db.Articles.AddAsync(item);
+
             await _db.SaveChangesAsync();
         }
 
@@ -61,5 +67,16 @@ namespace DAL.Repositories
 
             return article == null ? null : article;
         }
+
+        public async Task AddTag(Guid articleId, Tag tag)
+        {
+            var article = await _db.Articles.Where(x => x.Id == articleId).FirstOrDefaultAsync();
+
+            article.Tags.Add(tag);
+
+            await _db.SaveChangesAsync();
+        }
+
+        
     }
 }

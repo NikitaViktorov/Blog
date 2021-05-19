@@ -87,6 +87,21 @@ namespace Blog.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [Route("AddTag/{ArticleId}")]
+        [HttpPost]
+        public async Task<IActionResult> AddTag([FromRoute] Guid ArticleId,[FromBody] TagDTO tagDTO)
+        {
+            try
+            {
+                await _articleService.AddTag(ArticleId, tagDTO);
+                return Ok();
+            }
+            catch(ArticleException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateArticle([FromRoute] Guid id, [FromBody] ArticleDTO articleDTO)
         {

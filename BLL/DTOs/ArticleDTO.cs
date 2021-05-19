@@ -13,8 +13,7 @@ namespace BLL.DTOs
         [Required]
         [StringLength(50)]
         public string Text { get; set; }
-        public Guid TagId { get; set; }
-        public TagDTO Tag { get; set; }
+        public ICollection<TagDTO> Tags { get; set; }
         public Guid UserId { get; set; }
         public UserDTO User { get; set; }
         public ICollection<CommentDTO> Comments { get; set; }

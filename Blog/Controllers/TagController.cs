@@ -63,6 +63,7 @@ namespace Blog.Controllers
             try
             {
                 await _tagService.Update(id, tagDTO);
+
                 return Ok();
             }
             catch (TagException ex)
@@ -77,6 +78,7 @@ namespace Blog.Controllers
             try
             {
                 await _tagService.Delete(id);
+
                 return Ok();
             }
             catch (TagException ex)

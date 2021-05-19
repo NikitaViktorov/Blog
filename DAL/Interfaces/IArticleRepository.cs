@@ -16,5 +16,6 @@ namespace DAL.Interfaces
         Task<Article> Get(Guid id);
         Task<ICollection<Article>> GetArticlesByTag(Guid id);
         Task<Article> GetArticleByText(string text);
+        Task AddTag(Guid articleId, Tag tag);
     }
 }

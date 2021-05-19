@@ -18,12 +18,14 @@ namespace DAL.Repositories
         public async Task Create(Comment item)
         {
             await _db.Comments.AddAsync(item);
+
             await _db.SaveChangesAsync();
         }
 
         public async Task Delete(Guid id)
         {
             _db.Comments.Remove(await _db.Comments.FirstAsync(c => c.Id == id));
+
             await _db.SaveChangesAsync();
         }
 
@@ -43,7 +45,9 @@ namespace DAL.Repositories
         public async Task Update(Comment item)
         {
             _db.Comments.Remove(await _db.Comments.FirstAsync(a => a.Id == item.Id));
+
             await _db.Comments.AddAsync(item);
+
             await _db.SaveChangesAsync();
         }
     }

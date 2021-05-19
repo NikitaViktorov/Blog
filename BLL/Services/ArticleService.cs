@@ -22,11 +22,36 @@ namespace BLL.Sevices
             _mapper = AutoMapperProfile.InitializeAutoMapper().CreateMapper();
         }
 
+        public async Task AddTag(Guid ArticleId,TagDTO tagDTO)
+        {
+            /*Tag tag = null*/;
+            var article = await _unitOfWork.Articles.Get(ArticleId);
+            //var tag = await _unitOfWork.Tags.Get(tagDTO.Id);
+            if (article == null) throw new ArticleException("Article doesn't exist");
+
+            article.Tags.Add(_mapper.Map<Tag>(tagDTO));
+            //if (await _unitOfWork.Tags.Get(tagDTO.Id) == null)
+            //{
+            //    tag = _mapper.Map<Tag>(tagDTO); 
+            //    await _unitOfWork.Tags.Create(tag);
+            //}
+            //else
+            //{
+            //    tag = _mapper.Map<Tag>(tagDTO);
+            //}
+                
+            //var article = await _unitOfWork.Articles.Get(ArticleId);
+            //article.Tags.Add(_mapper.Map<Tag>(tag));
+
+            
+        }
+
         public async Task Create(ArticleDTO articleDTO)
         {
-            if (await _unitOfWork.Tags.Get(articleDTO.TagId) == null) throw new ArticleException("You don't create article,because the article doen't exist");
-            else if(await _unitOfWork.Users.Get(articleDTO.UserId) == null) throw new ArticleException("You don't create article,because the user doen't exist");
-            else await _unitOfWork.Articles.Create(_mapper.Map<Article>(articleDTO));
+            //if (await _unitOfWork.Tags.Get(articleDTO.TagId) == null) throw new ArticleException("You don't create article,because the article doen't exist");
+            //else if(await _unitOfWork.Users.Get(articleDTO.UserId) == null) throw new ArticleException("You don't create article,because the user doen't exist");
+            //else
+            await _unitOfWork.Articles.Create(_mapper.Map<Article>(articleDTO));
         }
         public async Task Delete(Guid id)
         {
