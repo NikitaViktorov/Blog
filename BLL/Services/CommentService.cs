@@ -60,6 +60,7 @@ namespace BLL.Sevices
 
         public async Task Delete(Guid id)
         {
+            //var comment = await _unitOfWork.Comments.Get(id) ?? throw new CommentException("You don't delete commentary.Because the commentary doesn't exist");
             if (await _unitOfWork.Comments.Get(id) == null)
                 throw new CommentException("You don't delete commentary.Because the commentary doesn't exist");
             await _unitOfWork.Comments.Delete(id);
@@ -67,20 +68,24 @@ namespace BLL.Sevices
 
         public async Task<CommentDTO> Get(Guid id)
         {
-            if (await _unitOfWork.Comments.Get(id) == null)
-                throw new CommentException("Commentar doesn't exist");
+            var comment = await _unitOfWork.Comments.Get(id);
+            //if (await _unitOfWork.Comments.Get(id) == null)
+            //    throw new CommentException("Commentar doesn't exist");
+
             //var config = new MapperConfiguration(cfg => cfg.CreateMap<Comment,CommentDTO>());
             //var mapper = new Mapper(config);
-            return _mapper.Map<CommentDTO>(await _unitOfWork.Comments.Get(id));
+            return _mapper.Map<CommentDTO>(comment) ?? throw new CommentException("Commentar doesn't exist");
         }
 
         public async Task<ICollection<CommentDTO>> GetAll()
         {
             //var config = new MapperConfiguration(cfg => cfg.CreateMap<Comment,CommentDTO>());
             //var mapper = new Mapper(config);
-            if (_mapper.Map<ICollection<CommentDTO>>(await _unitOfWork.Comments.GetAll()).Count == 0)
-                throw new CommentException("List of commentaries is empty");
-            return _mapper.Map<ICollection<CommentDTO>>(await _unitOfWork.Comments.GetAll());
+            var comments = _mapper.Map<ICollection<CommentDTO>>(await _unitOfWork.Comments.GetAll());
+            //if (_mapper.Map<ICollection<CommentDTO>>(await _unitOfWork.Comments.GetAll()).Count == 0)
+            //    throw new CommentException("List of commentaries is empty");
+            //return _mapper.Map<ICollection<CommentDTO>>(await _unitOfWork.Comments.GetAll());
+            return comments ?? throw new CommentException("List of commentaries is empty");
         }
 
         public async Task Update(Guid id, CommentDTO commentDTO)

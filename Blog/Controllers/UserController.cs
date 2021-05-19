@@ -25,7 +25,7 @@ namespace Blog.Controllers
             }
             catch (UserException ex)
             {
-                return Problem(ex.Message);
+                return NotFound(ex.Message);
             }
         }
         [HttpGet("{id}")]
@@ -37,7 +37,7 @@ namespace Blog.Controllers
             }
             catch (UserException ex)
             {
-                return Problem(ex.Message);
+                return NotFound(ex.Message);
             }
         }
         [Route("CreateUser")]
@@ -51,7 +51,7 @@ namespace Blog.Controllers
             }
             catch (UserException ex)
             {
-                return Problem(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
         [Route("UpdateUser/{id}")]
@@ -65,7 +65,7 @@ namespace Blog.Controllers
             }
             catch (UserException ex)
             {
-                return Problem(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
         [Route("DeleteUser/{id}")]

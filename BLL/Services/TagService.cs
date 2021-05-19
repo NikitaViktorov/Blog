@@ -43,20 +43,28 @@ namespace BLL.Sevices
 
         public async Task<TagDTO> Get(Guid id)
         {
-            if (await _unitOfWork.Tags.Get(id) == null)
-                throw new TagException("Tag doesn't exist.You don't get this tag");
+            var tag = _mapper.Map<TagDTO>(await _unitOfWork.Tags.Get(id));
+            //if (await _unitOfWork.Tags.Get(id) == null)
+            //    throw new TagException("Tag doesn't exist.You don't get this tag");
+
             //var config = new MapperConfiguration(cfg => cfg.CreateMap<Tag, TagDTO>());
             //var mapper = new Mapper(config);
-            return _mapper.Map<TagDTO>(await _unitOfWork.Tags.Get(id));
+
+            //return _mapper.Map<TagDTO>(await _unitOfWork.Tags.Get(id));
+            return tag ?? throw new TagException("Tag doesn't exist.You don't get this tag");
         }
 
         public async Task<ICollection<TagDTO>> GetAll()
         {
             //var config = new MapperConfiguration(cfg => cfg.CreateMap<Tag, TagDTO>());
             //var mapper = new Mapper(config);
-            if (_mapper.Map<ICollection<TagDTO>>(await _unitOfWork.Tags.GetAll()).Count == 0)
-                throw new TagException("List of tags is empty");
-            return _mapper.Map<ICollection<TagDTO>>(await _unitOfWork.Tags.GetAll());
+            var tags = _mapper.Map<ICollection<TagDTO>>(await _unitOfWork.Tags.GetAll());
+            //if (_mapper.Map<ICollection<TagDTO>>(await _unitOfWork.Tags.GetAll()).Count == 0)
+            //    throw new TagException("List of tags is empty");
+
+            //return _mapper.Map<ICollection<TagDTO>>(await _unitOfWork.Tags.GetAll());
+
+            return tags ?? throw new TagException("List of tags is empty");
         }
 
         public async Task Update(Guid id, TagDTO tagDTO)

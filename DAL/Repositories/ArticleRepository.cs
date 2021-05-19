@@ -30,25 +30,33 @@ namespace DAL.Repositories
         }
         public async Task<Article> Get(Guid id)
         {
-
-            if (await _db.Articles.CountAsync(a => a.Id == id) == 0)
-                return null;
-            return await _db.Articles.Include(c => c.Tags).ThenInclude(c => c.Articles).Include(c => c.Comments).FirstAsync(a => a.Id == id);
+            var article = await _db.Articles.Include(c => c.User).ThenInclude(c => c.Articles).Include(c => c.Tag).ThenInclude(c => c.Articles).Include(c => c.Comments).FirstOrDefaultAsync(a => a.Id == id);
+            //if (await _db.Articles.CountAsync(a => a.Id == id) == 0)
+            //    return null;
+            //return await _db.Articles.Include(c => c.User).Include(c => c.Tags).ThenInclude(c => c.Articles).Include(c => c.Comments).FirstAsync(a => a.Id == id);
+            return article == null ? null : article;
         }
 
         public async Task<ICollection<Article>> GetAll()
         {
             //return await _db.Articles.ToListAsync();
-            return await _db.Articles.Include(c => c.User).Include(c => c.Comments).Include(s => s.Tags).ThenInclude(c => c.Articles).ToListAsync();
+            var articles = await _db.Articles.Include(c => c.User).Include(c => c.Comments).Include(s => s.Tag).ThenInclude(c => c.Articles).ToListAsync();
+            return articles.Count == 0 ? null : articles;
         }
 
         public async Task<ICollection<Article>> GetArticlesByTag(Guid id)
         {
             var tag = await _db.Tags.FindAsync(id);
-            var articles = await _db.Articles.Include(x => x.Tags).ToListAsync();
-            var result = articles.Where(x => x.Tags.Contains(tag));
+            var articles = await _db.Articles.Include(x => x.Comments).Include(x => x.User).Include(x => x.Tag).ToListAsync();
+            var result = articles.Where(x => x.Tag == tag);
 
-            return result.ToList();
+
+            //if(result.Count() == 0) 
+            //    return null; 
+            //else
+            //    return result.ToList();
+            
+            return result.Count() == 0 ? null : result.ToList();
 
             //var result = await _db.Articles.Include(x => x.Tags)
             //    .Where(x => x.Tags.Select(x=>x.Id)

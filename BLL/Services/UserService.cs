@@ -43,20 +43,22 @@ namespace BLL.Sevices
 
         public async Task<UserDTO> Get(Guid id)
         {
-            if (await _unitOfWork.Users.Get(id) == null)
-                throw new UserException("You don't get this user.User doesn't exist");
+            var user = await _unitOfWork.Users.Get(id);
+            //if (await _unitOfWork.Users.Get(id) == null)
+            //    throw new UserException("You don't get this user.User doesn't exist");
             //var config = new MapperConfiguration(cfg => cfg.CreateMap<User, UserDTO>());
             //var mapper = new Mapper(config);
-            return _mapper.Map<UserDTO>(await _unitOfWork.Users.Get(id));
+            return _mapper.Map<UserDTO>(user) ?? throw new UserException("You don't get this user.User doesn't exist");
         }
 
         public async Task<ICollection<UserDTO>> GetAll()
         {
             //var config = new MapperConfiguration(cfg => cfg.CreateMap<User, UserDTO>());
             //var mapper = new Mapper(config);
-            if (_mapper.Map<ICollection<UserDTO>>(await _unitOfWork.Users.GetAll()).Count == 0)
-                throw new UserException("List of Users is empty");
-            return _mapper.Map<ICollection<UserDTO>>(await _unitOfWork.Users.GetAll());
+            var users = await _unitOfWork.Users.GetAll(); 
+            //if (_mapper.Map<ICollection<UserDTO>>(await _unitOfWork.Users.GetAll()).Count == 0)
+            //    throw new UserException("List of Users is empty");
+            return _mapper.Map<ICollection<UserDTO>>(users) ?? throw new UserException("List of Users is empty");
         }
 
         public async Task Update(Guid id, UserDTO userDTO)

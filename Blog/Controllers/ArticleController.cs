@@ -1,6 +1,8 @@
 ﻿using BLL.DTOs;
 using BLL.Exceptions;
 using BLL.Interfaces;
+using DAL.Entities;
+using DAL.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -21,7 +23,7 @@ namespace Blog.Controllers
             _articleService = articleService;
         }
         [HttpGet]
-        [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
         public async Task<IActionResult> GetArticles()
         {
             try
@@ -30,7 +32,7 @@ namespace Blog.Controllers
             }
             catch (ArticleException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
         [Route("GetArticle/{id}")]
@@ -43,7 +45,7 @@ namespace Blog.Controllers
             }
             catch (ArticleException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
         [Route("ArticlesByTag/{id}")]

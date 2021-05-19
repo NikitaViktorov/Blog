@@ -27,7 +27,7 @@ namespace Blog.Controllers
             }
             catch (TagException ex)
             {
-                return Problem(ex.Message);
+                return NotFound(ex.Message);
             }
         }
         [HttpGet]
@@ -39,7 +39,7 @@ namespace Blog.Controllers
             }
             catch (Exception ex)
             {
-                return Problem(ex.Message);
+                return NotFound(ex.Message);
             }
         }
         [Route("CreateTag")]
@@ -53,7 +53,7 @@ namespace Blog.Controllers
             }
             catch (TagException ex)
             {
-                return Problem(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
         [Route("UpdateTag/{id}")]
@@ -67,7 +67,7 @@ namespace Blog.Controllers
             }
             catch (TagException ex)
             {
-                return Problem(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
         [Route("DeleteArticle/{id}")]
@@ -81,7 +81,7 @@ namespace Blog.Controllers
             }
             catch (TagException ex)
             {
-                return Problem(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
     }

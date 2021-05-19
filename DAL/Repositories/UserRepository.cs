@@ -29,14 +29,17 @@ namespace DAL.Repositories
 
         public async Task<User> Get(Guid id)
         {
-            if (await _db.Users.CountAsync(a => a.Id == id) == 0)
-                return null;
-            return await _db.Users.FirstAsync(a => a.Id == id);
+            //if (await _db.Users.CountAsync(a => a.Id == id) == 0)
+            //    return null;
+            //return await _db.Users.FirstAsync(a => a.Id == id);
+            var user = await _db.Users.Include(c => c.Articles).ThenInclude(c => c.Tag).FirstOrDefaultAsync(c => c.Id == id);
+            return user == null ? null : user;
         }
 
         public async Task<ICollection<User>> GetAll()
         {
-            return await _db.Users.ToListAsync();
+            var users = await _db.Users.Include(c => c.Articles).ThenInclude(c => c.Comments).ToListAsync();
+            return users.Count == 0 ? null : users;
         }
 
         public async Task Update(User item)

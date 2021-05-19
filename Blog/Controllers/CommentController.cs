@@ -26,7 +26,7 @@ namespace Blog.Controllers
             }
             catch (Exception ex)
             {
-                return Problem(ex.Message);
+                return NotFound(ex.Message);
             }
         }
         [HttpGet("{id}")]
@@ -38,7 +38,7 @@ namespace Blog.Controllers
             }
             catch (CommentException ex)
             {
-                return Problem(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
@@ -53,7 +53,7 @@ namespace Blog.Controllers
             }
             catch (CommentException ex)
             {
-                return Problem(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
         [Route("UpdateComment/{id}")]
@@ -67,7 +67,7 @@ namespace Blog.Controllers
             }
             catch (CommentException ex)
             {
-                return Problem(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
         [Route("DeleteComment/{id}")]
@@ -81,7 +81,7 @@ namespace Blog.Controllers
             }
             catch (CommentException ex)
             {
-                return Problem(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
