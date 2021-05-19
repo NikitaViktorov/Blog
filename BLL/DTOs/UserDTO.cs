@@ -24,9 +24,5 @@ namespace BLL.DTOs
         [Required]
         public Role Role { get; set; }
         public ICollection<ArticleDTO> Articles { get; set; }
-        //public UserDTO()
-        //{
-        //    this.ArticleDTOs = new List<ArticleDTO>();
-        //}
     }
 }

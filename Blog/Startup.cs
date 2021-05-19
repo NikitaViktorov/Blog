@@ -25,7 +25,6 @@ namespace Blog
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -34,17 +33,15 @@ namespace Blog
                         Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers().AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            //services.AddSwaggerGen();
+            
             services.AddSwaggerGen(swagger =>
             {
-                //This is to generate the Default UI of Swagger Documentation  
                 swagger.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "JWT Token Authentication API",
+                    Title = "Blog API",
                     Description = "ASP.NET Core 3.1 Web API"
                 });
-                // To Enable authorization using Swagger (JWT)  
                 swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",

@@ -1,9 +1,6 @@
 ﻿using BLL.DTOs;
 using BLL.Exceptions;
 using BLL.Interfaces;
-using DAL.Entities;
-using DAL.Enums;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -32,7 +29,7 @@ namespace Blog.Controllers
             }
             catch (ArticleException ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
         [Route("GetArticle/{id}")]
@@ -60,9 +57,21 @@ namespace Blog.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
         }
 
+        [Route("GetArticleByText")]
+        [HttpGet]
+        public async Task<IActionResult> GetArticlesByText([FromBody] string text)
+        {
+            try
+            {
+                return Ok(await _articleService.GetArticleByText(text));
+            }
+            catch (ArticleException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         [Route("CreateArticle")]
         [HttpPost]
         public async Task<IActionResult> CreateArticle([FromBody] ArticleDTO articleDTO)
@@ -92,20 +101,6 @@ namespace Blog.Controllers
             }
         }
 
-        //[Route("AddTag")]
-        //[HttpPut("{title}")]
-        //public async Task<IActionResult> AddTag([FromRoute]string title,[FromBody] TagDTO tagDTO)
-        //{
-        //    try
-        //    {
-        //        await _articleService.AddTag(title, tagDTO);
-        //        return Ok();
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        return Problem(ex.Message);
-        //    }
-        //}
         [Route("DeleteArticle/{id}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteArticle([FromRoute] Guid id)

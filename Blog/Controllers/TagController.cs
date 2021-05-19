@@ -70,7 +70,7 @@ namespace Blog.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [Route("DeleteArticle/{id}")]
+        [Route("DeleteTag/{id}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteTag([FromRoute]Guid id)
         {

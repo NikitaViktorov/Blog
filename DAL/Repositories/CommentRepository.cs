@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class CommentRepository : IRepository<Comment>
+    public class CommentRepository : ICommentRepository
     {
         private readonly BlogContext _db;
         public CommentRepository(BlogContext db)
@@ -31,6 +31,7 @@ namespace DAL.Repositories
         {
             if (await _db.Comments.CountAsync(a => a.Id == id) == 0)
                 return null;
+
             return await _db.Comments.FirstAsync(a => a.Id == id);
         }
 

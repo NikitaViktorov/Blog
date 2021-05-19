@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class TagRepository : IRepository<Tag>
+    public class TagRepository : ITagRepository
     {
         private readonly BlogContext _db;
         public TagRepository(BlogContext db)

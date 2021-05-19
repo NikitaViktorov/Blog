@@ -18,19 +18,10 @@ namespace BLL.Sevices
         public UserService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            //_mapper = new MapperConfiguration(cfg =>
-            //{
-            //    cfg.CreateMap<Tag, TagDTO>().ReverseMap();
-            //    cfg.CreateMap<Article, ArticleDTO>().ReverseMap();
-            //    cfg.CreateMap<User, UserDTO>().ReverseMap();
-            //    cfg.CreateMap<Comment, CommentDTO>().ReverseMap();
-            //}).CreateMapper();
             _mapper = AutoMapperProfile.InitializeAutoMapper().CreateMapper();
         }
         public async Task Create(UserDTO userDTO)
         {
-            //var config = new MapperConfiguration(cfg => cfg.CreateMap<UserDTO,User>());
-            //var mapper = new Mapper(config);
             await _unitOfWork.Users.Create(_mapper.Map<User>(userDTO));
         }
 
@@ -44,20 +35,14 @@ namespace BLL.Sevices
         public async Task<UserDTO> Get(Guid id)
         {
             var user = await _unitOfWork.Users.Get(id);
-            //if (await _unitOfWork.Users.Get(id) == null)
-            //    throw new UserException("You don't get this user.User doesn't exist");
-            //var config = new MapperConfiguration(cfg => cfg.CreateMap<User, UserDTO>());
-            //var mapper = new Mapper(config);
+            
             return _mapper.Map<UserDTO>(user) ?? throw new UserException("You don't get this user.User doesn't exist");
         }
 
         public async Task<ICollection<UserDTO>> GetAll()
         {
-            //var config = new MapperConfiguration(cfg => cfg.CreateMap<User, UserDTO>());
-            //var mapper = new Mapper(config);
             var users = await _unitOfWork.Users.GetAll(); 
-            //if (_mapper.Map<ICollection<UserDTO>>(await _unitOfWork.Users.GetAll()).Count == 0)
-            //    throw new UserException("List of Users is empty");
+            
             return _mapper.Map<ICollection<UserDTO>>(users) ?? throw new UserException("List of Users is empty");
         }
 
@@ -65,10 +50,10 @@ namespace BLL.Sevices
         {
             if (await _unitOfWork.Users.Get(id) == null)
                 throw new UserException("You don't update this user.User doesn't exist");
-            //var config = new MapperConfiguration(cfg => cfg.CreateMap<UserDTO, User>());
-            //var mapper = new Mapper(config);
+            
             var updateUser = _mapper.Map<User>(userDTO);
             updateUser.Id = id;
+
             await _unitOfWork.Users.Update(updateUser);
         }
     }

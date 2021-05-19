@@ -9,10 +9,10 @@ namespace BLL.Interfaces
     {
         Task Create(ArticleDTO articleDTO);
         Task Delete(Guid id);
-        //Task AddTag(string title, TagDTO tagDTO);
         Task<ArticleDTO> Get(Guid id);
         Task<ICollection<ArticleDTO>> GetAll();
         Task<ICollection<ArticleDTO>> GetArticlesByTag(Guid id);
         Task Update(Guid id, ArticleDTO articleDTO);
+        Task<ArticleDTO> GetArticleByText(string text);
     }
 }
