@@ -68,6 +68,10 @@ namespace Blog
                 });
             });
             services.AddScoped<IUnitOfWork, EFUnitOfWork>();
+            services.AddTransient<IArticleRepository, ArticleRepository>();
+            services.AddTransient<ICommentRepository, CommentRepository>();
+            services.AddTransient<ITagRepository, TagRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IArticleService, ArticleService>();
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<ITagService, TagService>();
@@ -107,7 +111,6 @@ namespace Blog
             services.AddAuthorization();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
