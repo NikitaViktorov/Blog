@@ -40,7 +40,7 @@ namespace Blog
                 {
                     Version = "v1",
                     Title = "Blog API",
-                    Description = "ASP.NET Core 3.1 Web API"
+                    Description = "ASP.NET Core 5.0 Web API"
                 });
                 swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
@@ -55,15 +55,14 @@ namespace Blog
                 {
                     {
                           new OpenApiSecurityScheme
-                            {
+                          {
                                 Reference = new OpenApiReference
                                 {
                                     Type = ReferenceType.SecurityScheme,
                                     Id = "Bearer"
                                 }
-                            },
-                            new string[] {}
-
+                          },
+                          new string[] {}
                     }
                 });
             });
@@ -113,6 +112,8 @@ namespace Blog
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(options => options.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -122,7 +123,6 @@ namespace Blog
 
             app.UseRouting();
 
-            app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();

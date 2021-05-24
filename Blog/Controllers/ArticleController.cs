@@ -1,7 +1,6 @@
 ﻿using BLL.DTOs;
 using BLL.Exceptions;
 using BLL.Interfaces;
-using Blog.Shells;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -49,31 +48,31 @@ namespace Blog.Controllers
         }
         [Route("GetArticlesByTag")]
         [HttpGet]
-        public async Task<IActionResult> GetArticlesByTag([FromBody] TagAdd tagAdd)
-        {
-            try
-            {
-                return Ok(await _articleService.GetArticlesByTag(tagAdd.Tags));
-            }
-            catch (ArticleException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //public async Task<IActionResult> GetArticlesByTag([FromBody] TagAdd tagAdd)
+        //{
+        //    try
+        //    {
+        //        return Ok(await _articleService.GetArticlesByTag(tagAdd.Tags));
+        //    }
+        //    catch (ArticleException ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
         [Route("GetArticleByText")]
         [HttpGet]
-        public async Task<IActionResult> GetArticlesByText([FromBody] TextAdd textAdd)
-        {
-            try
-            {
-                return Ok(await _articleService.GetArticleByText(textAdd.Text));
-            }
-            catch (ArticleException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //public async Task<IActionResult> GetArticlesByText([FromBody] TextAdd textAdd)
+        //{
+        //    try
+        //    {
+        //        return Ok(await _articleService.GetArticleByText(textAdd.Text));
+        //    }
+        //    catch (ArticleException ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
         [Route("CreateArticle")]
         [HttpPost]
         public async Task<IActionResult> CreateArticle([FromBody] ArticleDTO articleDTO)
