@@ -15,8 +15,6 @@ export class UserService {
  readonly baseURL = 'http://localhost:26561/api/User'
   public formData: User = new User();
   public users: any;
-  public f: Observable<User[]>;
-  public d: User[] = [];
 
   constructor(private httpClient: HttpClient) {
   }

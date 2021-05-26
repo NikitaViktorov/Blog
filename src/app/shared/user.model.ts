@@ -2,9 +2,9 @@ import { Guid } from "guid-typescript";
 
 export class User {
     public id: Guid;
-    public Email: string;
-    public Password: string;
-    public Name: string;
-    public Surname: string;
-    public Role: string;
+    public email: string;
+    public password: string;
+    public name: string;
+    public surname: string;
+    public role: string;
 }
