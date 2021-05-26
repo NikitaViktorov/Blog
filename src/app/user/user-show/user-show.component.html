@@ -1,0 +1,32 @@
+<table class="table">
+    <thead class = "thead-light">
+        <tr ngclass="btn-primary">
+            <th class="tbl2">Email</th>
+            <th class="tbl2">Password</th>
+            <th class="tbl2">Name</th>
+            <th class="tbl2">Surname</th>
+            <th class="tbl2">Role</th>
+        </tr>
+    </thead>
+    <tbody>
+    <!-- <tr *ngFor="let item of userService.users">
+        <td class="tbl2">{{item.Email}}</td>
+        <td class="tbl2">{{item.Password}}</td>
+        <td class="tbl2">{{item.Name}}</td>
+        <td class="tbl2">{{item.Surname}}</td>  
+        <td class="tbl2">{{item.Role}}</td>
+    </tr> -->
+    <!-- <p *ngFor ="let item of users">{{item}}</p> -->
+    <!-- <tr *ngFor="let item of users">
+            
+    </tr> -->
+    <tr *ngFor="let item of Users">
+        <td class="tbl2">{{item.email}}</td>
+        <td class="tbl2">{{item.password}}</td>
+        <td class="tbl2">{{item.name}}</td>
+        <td class="tbl2">{{item.surname}}</td>
+        <td class="tbl2">{{item.role}}</td>
+    </tr>
+    </tbody>
+</table>
+
