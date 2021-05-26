@@ -20,7 +20,7 @@ namespace BLL.DTOs
         public string Name { get; set; }
         [Required]
         [StringLength(50)]
-        public string Surname { get; set; }
+        public string Surname {  get; set; }
         [Required]
         public Role Role { get; set; }
         public ICollection<ArticleDTO> Articles { get; set; }

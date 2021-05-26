@@ -2,7 +2,7 @@
 
 namespace BLL.Enums
 {
-    enum Role
+    public enum Role
     {
         User = 1,
         Admin = 2
