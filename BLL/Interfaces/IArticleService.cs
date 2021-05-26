@@ -13,6 +13,7 @@ namespace BLL.Interfaces
         Task<ICollection<ArticleDTO>> GetAll();
         //Task<ICollection<ArticleDTO>> GetArticlesByTag(Guid id);
         Task<ICollection<ArticleDTO>> GetArticlesByTag(List<TagDTO> articles);
+        Task<ICollection<ArticleDTO>> GetUserArticles(Guid userId);
         Task Update(Guid id, ArticleDTO articleDTO);
         Task AddTag(Guid Article, TagDTO tagDTO);
         Task<ArticleDTO> GetArticleByText(string text);

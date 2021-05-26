@@ -1,6 +1,7 @@
 ﻿using BLL.DTOs;
 using BLL.Exceptions;
 using BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -60,8 +61,8 @@ namespace Blog.Controllers
         //    }
         //}
 
-        [Route("GetArticleByText")]
-        [HttpGet]
+        //[Route("GetArticleByText")]
+        //[HttpGet]
         //public async Task<IActionResult> GetArticlesByText([FromBody] TextAdd textAdd)
         //{
         //    try
@@ -73,6 +74,20 @@ namespace Blog.Controllers
         //        return BadRequest(ex.Message);
         //    }
         //}
+        [Route("GetUserArticles")]
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> GetUserArticles()
+        {
+            try
+            {
+                return Ok(await _articleService.GetUserArticles(UserId));
+            }
+            catch(ArticleException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         [Route("CreateArticle")]
         [HttpPost]
         public async Task<IActionResult> CreateArticle([FromBody] ArticleDTO articleDTO)

@@ -14,6 +14,7 @@ namespace DAL.Interfaces
         Task Delete(Guid id);
         Task<ICollection<Article>> GetAll();
         Task<Article> Get(Guid id);
+        Task<ICollection<Article>> GetUserArticles(Guid userId);
         //Task<ICollection<Article>> GetArticlesByTag(Guid id);
         Task<ICollection<Article>> GetArticlesByTag(List<Tag> tags);
         Task<Article> GetArticleByText(string text);

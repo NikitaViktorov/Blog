@@ -73,6 +73,12 @@ namespace DAL.Repositories
             await _db.SaveChangesAsync();
         }
 
+        public async Task<ICollection<Article>> GetUserArticles(Guid userId)
+        {
+            var articles = await _db.Articles.Where(x => x.UserId == userId).ToListAsync();
+            return articles == null ? null : articles;
+        }
+
         public async Task<Article> GetArticleByText(string text)
         {
             var article = await _db.Articles.Where(x => x.Text == text).FirstOrDefaultAsync();
