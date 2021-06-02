@@ -1,6 +1,7 @@
 ﻿using BLL.DTOs;
 using BLL.Exceptions;
 using BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace Blog.Controllers
             _userService = userService;
         }
         [HttpGet]
+        //[Authorize(Roles = "User")]
         public async Task<IActionResult> GetUsers()
         {
             try
@@ -24,7 +26,7 @@ namespace Blog.Controllers
                 return Ok(await _userService.GetAll());
             }
             catch (UserException ex)
-            {
+            { 
                 return NotFound(ex.Message);
             }
         }

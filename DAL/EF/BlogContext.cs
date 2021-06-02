@@ -2,6 +2,7 @@
 using DAL.Enums;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 
 namespace DAL.EF
 {
@@ -27,7 +28,8 @@ namespace DAL.EF
                     .HasConversion(x => x.ToString(),
                         x => (Role)Enum.Parse(typeof(Role), x));
             });
-
+            Guid g1 = Guid.NewGuid();
+            Guid g2 = Guid.NewGuid();
             User user = new User
             {
                 Id = Guid.NewGuid(),
@@ -37,10 +39,10 @@ namespace DAL.EF
                 Surname = "Viktorov",
                 Role = Role.User
             };
-            Tag tag = new Tag { Id = Guid.NewGuid(), Text = "#MU" };
+            Tag tag = new Tag { Id = g2, Text = "#MU" };
             Article article = new Article
             {
-                Id = Guid.NewGuid(),
+                Id = g1,
                 Title = "Футбольный клуб Манчестер Юнайтед",
                 Text = "МЮ - чемпион",
                 UserId = user.Id,
@@ -67,11 +69,18 @@ namespace DAL.EF
                 {
                     tag
                 });
+
             modelBuilder.Entity<Comment>().HasData(
                new Comment[]
                {
                     comment
                });
+
+            modelBuilder
+                .Entity<Article>()
+                .HasMany(p => p.Tags)
+                .WithMany(p => p.Articles)
+                .UsingEntity(j => j.HasData(new {ArticlesId = g1, TagsId = g2 }));
         }
     }
 }

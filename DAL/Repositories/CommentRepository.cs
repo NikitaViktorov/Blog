@@ -4,6 +4,7 @@ using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DAL.Repositories
@@ -37,6 +38,15 @@ namespace DAL.Repositories
             return await _db.Comments.FirstAsync(a => a.Id == id);
         }
 
+        public async Task<ICollection<Comment>> GetCommentsByArticles(Guid articleId)
+        {
+
+            if (await _db.Comments.CountAsync(c => c.ArticleId == articleId) == 0)
+                return null;
+
+            return await _db.Comments.Where(a => a.ArticleId == articleId).ToListAsync();
+        }
+
         public async Task<ICollection<Comment>> GetAll()
         {
             return await _db.Comments.ToListAsync();
@@ -49,6 +59,11 @@ namespace DAL.Repositories
             await _db.Comments.AddAsync(item);
 
             await _db.SaveChangesAsync();
+        }
+
+        public Task<ICollection<Comment>> GetCommentsByArticle(Guid articleId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
