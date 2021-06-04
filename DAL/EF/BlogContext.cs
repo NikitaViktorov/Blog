@@ -37,12 +37,36 @@ namespace DAL.EF
                 Surname = "Viktorov",
                 Role = Role.User
             };
+            User user1 = new User
+            {
+                Id = Guid.NewGuid(),
+                Email = "Admin@gmail.com",
+                Password = "54321",
+                Name = "Nikita",
+                Surname = "Viktorov",
+                Role = Role.Admin
+            };
             Tag tag = new Tag { Id = Guid.NewGuid(), Text = "#MU" };
+            Tag tag1 = new Tag { Id = Guid.NewGuid(), Text = "#Football" };
             Article article = new Article
             {
                 Id = Guid.NewGuid(),
                 Title = "Футбольный клуб Манчестер Юнайтед",
                 Text = "МЮ - чемпион",
+                UserId = user.Id,
+            };
+            Article article1 = new Article
+            {
+                Id = Guid.NewGuid(),
+                Title = "Английский футбол",
+                Text = "Англия - чемпион",
+                UserId = user1.Id,
+            };
+            Article article2 = new Article
+            {
+                Id = Guid.NewGuid(),
+                Title = "Испанский футбол",
+                Text = "Испания - чемпион",
                 UserId = user.Id,
             };
             Comment comment = new Comment { Id = Guid.NewGuid(), Text = "MU - The Champions!", ArticleId = article.Id};
@@ -51,21 +75,21 @@ namespace DAL.EF
             (
                 new User[]
                 {
-                    user
+                    user,user1
                 }
             );
             modelBuilder.Entity<Article>().HasData
              (
                 new Article[]
                 {
-                    article
+                    article,article1,article2
                 }
              );
            
             modelBuilder.Entity<Tag>().HasData(
                 new Tag[]
                 {
-                    tag
+                    tag,tag1
                 });
 
             modelBuilder.Entity<Comment>().HasData(
@@ -78,7 +102,8 @@ namespace DAL.EF
                 .Entity<Article>()
                 .HasMany(p => p.Tags)
                 .WithMany(p => p.Articles)
-                .UsingEntity(j => j.HasData(new {ArticlesId = article.Id, TagsId = tag.Id }));
+                .UsingEntity(j => j.HasData(new {ArticlesId = article.Id, TagsId = tag.Id },new { ArticlesId = article1.Id,TagsId = tag.Id}, new { ArticlesId = article2.Id, TagsId = tag1.Id }));
         }
     }
 }
+    

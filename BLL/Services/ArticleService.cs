@@ -64,15 +64,22 @@ namespace BLL.Sevices
             return _mapper.Map<ArticleDTO>(article);
         }
 
-        public async Task<ICollection<ArticleDTO>> GetArticlesByTag(List<TagDTO> articles)
+        //public async Task<ICollection<ArticleDTO>> GetArticlesByTag(List<TagDTO> articles)
+        //{
+        //    var newArticles = _mapper.Map<List<Tag>>(articles);
+
+        //    var returnedArticles = await _unitOfWork.Articles.GetArticlesByTag(newArticles);
+
+        //    if(returnedArticles == null) throw new ArticleException("Articles don't exist");
+
+        //    return _mapper.Map<List<ArticleDTO>>(returnedArticles);
+        //}
+
+        public async Task<ICollection<ArticleDTO>> GetArticlesByTag(Guid tagId)
         {
-            var newArticles = _mapper.Map<List<Tag>>(articles);
-
-            var returnedArticles = await _unitOfWork.Articles.GetArticlesByTag(newArticles);
-
-            if(returnedArticles == null) throw new ArticleException("Articles don't exist");
-
-            return _mapper.Map<List<ArticleDTO>>(returnedArticles);
+            var articles = await _unitOfWork.Articles.GetArticlesByTag(tagId);
+            if (articles == null) throw new ArticleException("Articles don't exist");
+            return _mapper.Map<List<ArticleDTO>>(articles);
         }
 
         public async Task<ICollection<ArticleDTO>> GetUserArticles(Guid userId)

@@ -52,18 +52,19 @@ namespace DAL.Repositories
 
         //    return result.Count() == 0 ? null : result.ToList();
         //}
-        public async Task<ICollection<Article>> GetArticlesByTag(List<Tag> tags)
-        {
-            var article = await _db.Articles.ToListAsync();
-            var commonArticles = new List<Article>();
-            foreach(var item in article)
-            {
-                var commonTags = item.Tags.Intersect(tags).ToList();
-                if (commonTags.Count == tags.Count)
-                    commonArticles.Add(item);
-            }
-            return commonArticles.Count() == 0 ? null : commonArticles;
-        }
+        //public async Task<ICollection<Article>> GetArticlesByTag(List<Tag> tags)
+        //{
+        //    var article = await _db.Articles.ToListAsync();
+        //    var commonArticles = new List<Article>();
+        //    foreach(var item in article)
+        //    {
+        //        var commonTags = item.Tags.Intersect(tags).ToList();
+        //        if (commonTags.Count == tags.Count)
+        //            commonArticles.Add(item);
+        //    }
+        //    return commonArticles.Count() == 0 ? null : commonArticles;
+        //}
+
         public async Task Update(Article item)
         {
             _db.Articles.Remove(await _db.Articles.FirstAsync(a => a.Id == item.Id));
@@ -95,6 +96,13 @@ namespace DAL.Repositories
             await _db.SaveChangesAsync();
         }
 
-        
+        public async Task<ICollection<Article>> GetArticlesByTag(Guid tagId)
+        {
+            Tag currentTag = await _db.Tags.FindAsync(tagId);
+
+            var articles = await _db.Articles.Where(a => a.Tags.Contains(currentTag)).Include(c => c.User).Include(c => c.Comments).Include(s => s.Tags).ThenInclude(c => c.Articles).ToListAsync();
+
+            return articles == null ? null : articles;
+        }
     }
 }

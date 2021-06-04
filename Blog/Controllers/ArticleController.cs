@@ -4,7 +4,6 @@ using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -22,7 +21,6 @@ namespace Blog.Controllers
             _articleService = articleService;
         }
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetArticles()
         {
             try
@@ -34,7 +32,7 @@ namespace Blog.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [Route("GetArticle/{id}")]
+        [Route("{id}")]
         [HttpGet]
         public async Task<IActionResult> GetArticle([FromRoute] Guid id)
         {
@@ -47,8 +45,19 @@ namespace Blog.Controllers
                 return NotFound(ex.Message);
             }
         }
-        [Route("GetArticlesByTag")]
+        [Route("GetArticlesByTag/{id}")]
         [HttpGet]
+        public async Task<IActionResult> GetArticlesByTag([FromRoute] Guid id)
+        {
+            try
+            {
+                return Ok(await _articleService.GetArticlesByTag(id));
+            }
+            catch(ArticleException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
         //public async Task<IActionResult> GetArticlesByTag([FromBody] TagAdd tagAdd)
         //{
         //    try
@@ -118,19 +127,20 @@ namespace Blog.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateArticle([FromRoute] Guid id, [FromBody] ArticleDTO articleDTO)
-        {
-            try
-            {
-                await _articleService.Update(id, articleDTO);
-                return Ok();
-            }
-            catch (ArticleException ex)
-            {
-                return BadRequest(ex.Message); 
-            }
-        }
+
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateArticle([FromRoute] Guid id, [FromBody] ArticleDTO articleDTO)
+        //{
+        //    try
+        //    {
+        //        await _articleService.Update(id, articleDTO);
+        //        return Ok();
+        //    }
+        //    catch (ArticleException ex)
+        //    {
+        //        return BadRequest(ex.Message); 
+        //    }
+        //}
 
         [Route("DeleteArticle/{id}")]
         [HttpDelete]

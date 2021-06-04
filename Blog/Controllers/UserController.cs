@@ -18,7 +18,7 @@ namespace Blog.Controllers
             _userService = userService;
         }
         [HttpGet]
-        //[Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetUsers()
         {
             try
