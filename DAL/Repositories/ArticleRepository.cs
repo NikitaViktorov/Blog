@@ -77,6 +77,7 @@ namespace DAL.Repositories
         public async Task<ICollection<Article>> GetUserArticles(Guid userId)
         {
             var articles = await _db.Articles.Where(x => x.UserId == userId).ToListAsync();
+
             return articles == null ? null : articles;
         }
 

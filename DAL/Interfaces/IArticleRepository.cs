@@ -15,9 +15,6 @@ namespace DAL.Interfaces
         Task<ICollection<Article>> GetAll();
         Task<Article> Get(Guid id);
         Task<ICollection<Article>> GetUserArticles(Guid userId);
-        //Task<ICollection<Article>> GetArticlesByTag(Guid id);
-        //Task<ICollection<Article>> GetArticlesByTag(List<Tag> tags);
-
         Task<ICollection<Article>> GetArticlesByTag(Guid tagId);
         Task<Article> GetArticleByText(string text);
         Task AddTag(Guid articleId, Tag tag);

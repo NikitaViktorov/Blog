@@ -31,7 +31,6 @@ namespace DAL.Repositories
 
         public async Task<Tag> Get(Guid id)
         {
-            //var tag = await _db.Tags.Whe/*.Include(a => a.Articles).ThenInclude(a => a.User).FirstOrDefaultAsync()*/;
             var tag = await _db.Tags.Include(a => a.Articles).ThenInclude(a => a.User).FirstOrDefaultAsync(x => x.Id == id);
 
             return tag == null ? null : tag;

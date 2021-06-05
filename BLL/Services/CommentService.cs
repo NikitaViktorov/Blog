@@ -28,8 +28,9 @@ namespace BLL.Sevices
             if (article == null) throw new CommentException("Article doesn't exist.You don't create commentary because of that!");
             
             var comment = _mapper.Map<Comment>(commentDTO);
+
             comment.ArticleId = article.Id;
-            
+
             await _unitOfWork.Comments.Create(comment);
         }
 
@@ -57,12 +58,13 @@ namespace BLL.Sevices
 
         public async Task Update(Guid id, CommentDTO commentDTO)
         {
-            if (await _unitOfWork.Comments.Get(id) == null)
+            Comment comment = await _unitOfWork.Comments.Get(id);
+            if (comment == null)
                 throw new CommentException("You can't update this comment.Because commentary doen't exist!");
             
             var updateComment = _mapper.Map<Comment>(commentDTO);
             updateComment.Id = id;
-
+            updateComment.ArticleId = comment.ArticleId;
             await _unitOfWork.Comments.Update(updateComment);
         }
     }

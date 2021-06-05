@@ -49,6 +49,7 @@ namespace Blog.Controllers
             try
             {
                 await _userService.Create(userDTO);
+
                 return Ok();
             }
             catch (UserException ex)
@@ -63,6 +64,7 @@ namespace Blog.Controllers
             try
             {
                 await _userService.Update(id, userDTO);
+
                 return Ok();
             }
             catch (UserException ex)
@@ -77,6 +79,7 @@ namespace Blog.Controllers
             try
             {
                 await _userService.Delete(id);
+
                 return Ok();
             }
             catch(UserException ex)

@@ -20,6 +20,10 @@ namespace DAL.Repositories
         {
             await _db.Comments.AddAsync(item);
 
+            var article = await _db.Articles.FindAsync(item.ArticleId);
+
+            article.Comments.Add(item);
+
             await _db.SaveChangesAsync();
         }
 

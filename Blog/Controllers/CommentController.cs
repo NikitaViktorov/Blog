@@ -52,13 +52,13 @@ namespace Blog.Controllers
         //        return N
         //    }
         //}
-        [Route("CreateComment/{ArticleId}")]
+        [Route("CreateComment/{id}")]
         [HttpPost]
-        public async Task<IActionResult> CreateComment([FromRoute]Guid ArticleId, [FromBody] CommentDTO commentDTO)
+        public async Task<IActionResult> CreateComment([FromRoute]Guid id, [FromBody] CommentDTO commentDTO)
         {
             try
             {
-                await _commentService.Create(ArticleId, commentDTO);
+                await _commentService.Create(id, commentDTO);
                 return Ok();
             }
             catch (CommentException ex)
