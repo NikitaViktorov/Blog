@@ -58,5 +58,10 @@ namespace DAL.Repositories
                 return _userRepository;
             }
         }
+
+        public void Save()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

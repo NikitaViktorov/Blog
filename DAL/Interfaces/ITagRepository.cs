@@ -12,5 +12,6 @@ namespace DAL.Interfaces
         Task Delete(Guid id);
         Task<ICollection<Tag>> GetAll();
         Task<Tag> Get(Guid id);
+        Task<Tag> GetByText(string text);
     }
 }

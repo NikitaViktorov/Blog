@@ -97,13 +97,14 @@ namespace Blog.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [Route("CreateArticle")]
+        [Route("CreateArticle/{userIdArt}")]
         [HttpPost]
-        public async Task<IActionResult> CreateArticle([FromBody] ArticleDTO articleDTO)
+        public async Task<IActionResult> CreateArticle([FromBody] ArticleDTO articleDTO, [FromRoute]string userIdArt)
         {
             try
             {
-                articleDTO.UserId = UserId;
+                articleDTO.UserId = Guid.Parse(userIdArt);
+                //articleDTO.UserId = articleDTO.UserId;
                 await _articleService.Create(articleDTO);
                 return Ok();
             }
@@ -128,19 +129,20 @@ namespace Blog.Controllers
             }
         }
 
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> UpdateArticle([FromRoute] Guid id, [FromBody] ArticleDTO articleDTO)
-        //{
-        //    try
-        //    {
-        //        await _articleService.Update(id, articleDTO);
-        //        return Ok();
-        //    }
-        //    catch (ArticleException ex)
-        //    {
-        //        return BadRequest(ex.Message); 
-        //    }
-        //}
+        [HttpPut("EditArticle/{id}")]
+        public async Task<IActionResult> UpdateArticle([FromRoute] Guid id, [FromBody] ArticleDTO articleDTO)
+        {
+            try
+            {
+                articleDTO.UserId = UserId;
+                await _articleService.Update(id, articleDTO);
+                return Ok();
+            }
+            catch (ArticleException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [Route("DeleteArticle/{id}")]
         [HttpDelete]

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BLL.Exceptions;
 using BLL.AutoMapper;
+using System.Linq;
 
 namespace BLL.Sevices
 {
@@ -34,7 +35,28 @@ namespace BLL.Sevices
 
         public async Task Create(ArticleDTO articleDTO)
         {
-            await _unitOfWork.Articles.Create(_mapper.Map<Article>(articleDTO));
+            articleDTO.Id = Guid.NewGuid();
+            Article article = _mapper.Map<Article>(articleDTO);
+
+            var articles = article.Tags.ToList();
+            for (int i = 0; i < article.Tags.Count(); i++)
+            {
+                var tag = await _unitOfWork.Tags.GetByText(articles[i].Text);
+                if (tag != null)
+                {
+                    article.Tags.Remove(articles[i]);
+                    article.Tags.Add(tag);
+                }
+            }
+            //foreach (var item in articleDTO.Tags)
+            //{
+            //    item.Id = Guid.NewGuid();
+            //    await _unitOfWork.Tags.Create(_mapper.Map<Tag>(item));
+            //    article.Tags.Add(_mapper.Map<Tag>(item));
+            //}
+
+            await _unitOfWork.Articles.Create(article);
+
         }
         public async Task Delete(Guid id)
         {
