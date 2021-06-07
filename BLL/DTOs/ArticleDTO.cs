@@ -7,9 +7,11 @@ namespace BLL.DTOs
     public class ArticleDTO
     {
         public Guid Id { get; set; }
+
         [Required]
         [StringLength(50)]
         public string Title { get; set; }
+
         [Required]
         [StringLength(50)]
         public string Text { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 
+
 namespace BLL.Exceptions
 {
     public class ArticleException : Exception

@@ -29,6 +29,7 @@ namespace Blog.Controllers
                 return NotFound(ex.Message);
             }
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetComment([FromRoute] Guid id)
         {

@@ -12,6 +12,5 @@ namespace BLL.Interfaces
         Task<CommentDTO> Get(Guid id);
         Task<ICollection<CommentDTO>> GetAll();
         Task Update(Guid id, CommentDTO commentDTO);
-        //Task<ICollection<CommentDTO>> GetCommentsByArticle(Guid articleId);
     }
 }

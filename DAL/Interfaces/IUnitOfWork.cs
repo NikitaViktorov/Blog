@@ -1,8 +1,4 @@
-﻿
-
-using System.Threading.Tasks;
-
-namespace DAL.Interfaces
+﻿namespace DAL.Interfaces
 {
     public interface IUnitOfWork
     {
@@ -10,6 +6,5 @@ namespace DAL.Interfaces
         ICommentRepository Comments { get; }
         ITagRepository Tags { get; }
         IUserRepository Users { get; }
-        void Save();
     }
 }

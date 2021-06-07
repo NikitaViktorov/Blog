@@ -1,6 +1,4 @@
-﻿
-
-namespace BLL.Enums
+﻿namespace BLL.Enums
 {
     public enum Role
     {

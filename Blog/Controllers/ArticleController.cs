@@ -83,8 +83,9 @@ namespace Blog.Controllers
             try
             {
                 articleDTO.UserId = Guid.Parse(userIdArt);
-                //articleDTO.UserId = articleDTO.UserId;
+
                 await _articleService.Create(articleDTO);
+
                 return Ok();
             }
             catch (ArticleException ex)
@@ -100,6 +101,7 @@ namespace Blog.Controllers
             try
             {
                 await _articleService.AddTag(ArticleId, tagDTO);
+
                 return Ok();
             }
             catch(ArticleException ex)
@@ -114,7 +116,9 @@ namespace Blog.Controllers
             try
             {
                 articleDTO.UserId = Guid.Parse(userIdArt);
+
                 await _articleService.Update(Guid.Parse(id), articleDTO);
+
                 return Ok();
             }
             catch (ArticleException ex)
@@ -130,6 +134,7 @@ namespace Blog.Controllers
             try
             {
                 await _articleService.Delete(id);
+
                 return Ok();
             }
             catch (Exception ex)

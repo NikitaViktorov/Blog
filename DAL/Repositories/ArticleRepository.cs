@@ -35,7 +35,6 @@ namespace DAL.Repositories
              
             return article == null ? null : article;
         }
-        
         public async Task<ICollection<Article>> GetAll()
         {
             var articles = await _db.Articles.Include(c => c.User).Include(c => c.Comments).Include(s => s.Tags).ThenInclude(c => c.Articles).ToListAsync();
@@ -48,7 +47,6 @@ namespace DAL.Repositories
 
             await _db.SaveChangesAsync();
         }
-
         public async Task<ICollection<Article>> GetUserArticles(Guid userId)
         {
             var articles = await _db.Articles.Where(x => x.UserId == userId).ToListAsync();

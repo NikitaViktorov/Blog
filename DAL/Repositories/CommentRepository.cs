@@ -41,7 +41,6 @@ namespace DAL.Repositories
         }
         public async Task<ICollection<Comment>> GetCommentsByArticles(Guid articleId)
         {
-
             if (await _db.Comments.CountAsync(c => c.ArticleId == articleId) == 0)
                 return null;
 

@@ -11,7 +11,6 @@ namespace Blog.Controllers
     [ApiController]
     public class TagController : ControllerBase
     {
-
         private readonly ITagService _tagService;
         public TagController(ITagService tagService)
         {

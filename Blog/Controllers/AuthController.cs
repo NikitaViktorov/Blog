@@ -19,7 +19,6 @@ namespace Blog.Controllers
     {
         private readonly IOptions<AuthOptions> _authOptions;
         private readonly IUserService _userService;
-
         public AuthController(IUserService userService, IOptions<AuthOptions> authOptions)
         {
             _userService = userService;
@@ -42,14 +41,12 @@ namespace Blog.Controllers
 
             return Unauthorized();
         }
-
         private async Task<UserDTO> AuthenticateUser(string email, string password)
         {
             IEnumerable<UserDTO> users = await _userService.GetAll();
             var allUsers = users.ToList();
             return allUsers.SingleOrDefault(u => u.Email == email && u.Password == password);
         }
-
         private string GenerateJWT(UserDTO userDTO)
         {
             var authParams = _authOptions.Value;

@@ -4,7 +4,6 @@ using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DAL.Repositories
@@ -22,7 +21,6 @@ namespace DAL.Repositories
 
             await _db.SaveChangesAsync();
         }
-
         public async Task Delete(Guid id)
         {
             _db.Tags.Remove(await _db.Tags.FirstAsync(c => c.Id == id));
@@ -36,22 +34,18 @@ namespace DAL.Repositories
 
             return tag == null ? null : tag;
         }
-
         public async Task<ICollection<Tag>> GetAll()
         {
-
             var tags = await _db.Tags.Include(a => a.Articles).ThenInclude(a => a.User).ToListAsync();
 
             return tags.Count == 0 ? null : tags;
         }
-
         public async Task<Tag> GetByText(string text)
         {
             var currentTag = await _db.Tags.FirstOrDefaultAsync(t => t.Text == text);
 
             return currentTag;
         }
-
         public async Task Update(Tag item)
         {
             _db.Tags.Remove(await _db.Tags.FirstAsync(a => a.Id == item.Id));

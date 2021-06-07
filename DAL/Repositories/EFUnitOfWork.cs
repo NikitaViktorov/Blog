@@ -1,6 +1,5 @@
 ﻿using DAL.EF;
 using DAL.Interfaces;
-using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
@@ -36,7 +35,6 @@ namespace DAL.Repositories
                 return _commentRepository;
             }
         }
-
         public ITagRepository Tags
         {
             get
@@ -47,7 +45,6 @@ namespace DAL.Repositories
                 return _tagRepository;
             }
         }
-
         public IUserRepository Users
         {
             get
@@ -57,11 +54,6 @@ namespace DAL.Repositories
 
                 return _userRepository;
             }
-        }
-
-        public void Save()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
