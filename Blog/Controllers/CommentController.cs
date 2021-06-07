@@ -41,17 +41,7 @@ namespace Blog.Controllers
                 return NotFound(ex.Message);
             }
         }
-        //public async Task<IActionResult> GetCommentsByArticle([FromRoute] Guid articleId)
-        //{
-        //    try
-        //    {
-
-        //    }
-        //    catch(CommentException ex)
-        //    {
-        //        return N
-        //    }
-        //}
+        
         [Route("CreateComment/{id}")]
         [HttpPost]
         public async Task<IActionResult> CreateComment([FromRoute]Guid id, [FromBody] CommentDTO commentDTO)

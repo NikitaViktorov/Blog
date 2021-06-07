@@ -42,34 +42,9 @@ namespace DAL.Repositories
 
             return articles.Count == 0 ? null : articles;
         }
-        //public async Task<ICollection<Article>> GetArticlesByTag(Guid id)
-        //{
-        //    var tag = await _db.Tags.FindAsync(id);
-
-        //    var articles = await _db.Articles.Include(x => x.Comments).Include(x => x.User).Include(x => x.Tags).ToListAsync();
-
-        //    var result = articles.Where(x => x.Tags.Contains(tag));
-
-        //    return result.Count() == 0 ? null : result.ToList();
-        //}
-        //public async Task<ICollection<Article>> GetArticlesByTag(List<Tag> tags)
-        //{
-        //    var article = await _db.Articles.ToListAsync();
-        //    var commonArticles = new List<Article>();
-        //    foreach(var item in article)
-        //    {
-        //        var commonTags = item.Tags.Intersect(tags).ToList();
-        //        if (commonTags.Count == tags.Count)
-        //            commonArticles.Add(item);
-        //    }
-        //    return commonArticles.Count() == 0 ? null : commonArticles;
-        //}
-
         public async Task Update(Article item)
         {
-            _db.Articles.Remove(await _db.Articles.FirstAsync(a => a.Id == item.Id));
-
-            await _db.Articles.AddAsync(item);
+            _db.Articles.Update(item);
 
             await _db.SaveChangesAsync();
         }
@@ -80,14 +55,12 @@ namespace DAL.Repositories
 
             return articles == null ? null : articles;
         }
-
         public async Task<Article> GetArticleByText(string text)
         {
             var article = await _db.Articles.Where(x => x.Text == text).FirstOrDefaultAsync();
 
             return article == null ? null : article;
         }
-
         public async Task AddTag(Guid articleId, Tag tag)
         {
             var article = await _db.Articles.Where(x => x.Id == articleId).FirstOrDefaultAsync();
@@ -96,7 +69,6 @@ namespace DAL.Repositories
 
             await _db.SaveChangesAsync();
         }
-
         public async Task<ICollection<Article>> GetArticlesByTag(Guid tagId)
         {
             Tag currentTag = await _db.Tags.FindAsync(tagId);

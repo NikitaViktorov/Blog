@@ -17,6 +17,7 @@ namespace Blog.Controllers
         {
             _userService = userService;
         }
+
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetUsers()
@@ -30,6 +31,7 @@ namespace Blog.Controllers
                 return NotFound(ex.Message);
             }
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser([FromRoute] Guid id)
         {
@@ -42,6 +44,7 @@ namespace Blog.Controllers
                 return NotFound(ex.Message);
             }
         }
+
         [Route("CreateUser")]
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] UserDTO userDTO)
@@ -57,6 +60,7 @@ namespace Blog.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [Route("UpdateUser/{id}")]
         [HttpPut]
         public async Task<IActionResult> UpdateUser([FromRoute] Guid id, [FromBody] UserDTO userDTO)
@@ -72,6 +76,7 @@ namespace Blog.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [Route("DeleteUser/{id}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteUser([FromRoute] Guid id)

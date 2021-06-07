@@ -25,6 +25,7 @@ namespace Blog.Controllers
             _userService = userService;
             _authOptions = authOptions;
         }
+
         [Route("login")]
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] Login request)
@@ -48,6 +49,7 @@ namespace Blog.Controllers
             var allUsers = users.ToList();
             return allUsers.SingleOrDefault(u => u.Email == email && u.Password == password);
         }
+
         private string GenerateJWT(UserDTO userDTO)
         {
             var authParams = _authOptions.Value;

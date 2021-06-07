@@ -17,6 +17,7 @@ namespace Blog.Controllers
         {
             _tagService = tagService;
         }
+
         [Route("GetTag/{id}")]
         [HttpGet]
         public async Task<IActionResult> GetTag([FromRoute] Guid id)
@@ -30,6 +31,7 @@ namespace Blog.Controllers
                 return NotFound(ex.Message);
             }
         }
+
         [HttpGet]
         public async Task<IActionResult> GetTags()
         {
@@ -42,6 +44,7 @@ namespace Blog.Controllers
                 return NotFound(ex.Message);
             }
         }
+
         [Route("CreateTag")]
         [HttpPost]
         public async Task<IActionResult> CreateTag([FromBody] TagDTO tagDTO)
@@ -56,6 +59,7 @@ namespace Blog.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [Route("UpdateTag/{id}")]
         [HttpPut]
         public async Task<IActionResult> UpdateTag([FromRoute] Guid id, [FromBody] TagDTO tagDTO)
@@ -71,6 +75,7 @@ namespace Blog.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [Route("DeleteTag/{id}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteTag([FromRoute]Guid id)

@@ -109,7 +109,6 @@ namespace Blog
             services.AddControllersWithViews();
             services.AddAuthorization();
         }
-
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseCors(options => options.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
@@ -122,7 +121,6 @@ namespace Blog
             }
 
             app.UseRouting();
-
 
             app.UseAuthentication();
             app.UseAuthorization();

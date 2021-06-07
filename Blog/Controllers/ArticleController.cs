@@ -20,6 +20,7 @@ namespace Blog.Controllers
         {
             _articleService = articleService;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetArticles()
         {
@@ -32,6 +33,7 @@ namespace Blog.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [Route("{id}")]
         [HttpGet]
         public async Task<IActionResult> GetArticle([FromRoute] Guid id)
@@ -45,6 +47,7 @@ namespace Blog.Controllers
                 return NotFound(ex.Message);
             }
         }
+
         [Route("GetArticlesByTag/{id}")]
         [HttpGet]
         public async Task<IActionResult> GetArticlesByTag([FromRoute] Guid id)
@@ -58,31 +61,7 @@ namespace Blog.Controllers
                 return NotFound(ex.Message);
             }
         }
-        //public async Task<IActionResult> GetArticlesByTag([FromBody] TagAdd tagAdd)
-        //{
-        //    try
-        //    {
-        //        return Ok(await _articleService.GetArticlesByTag(tagAdd.Tags));
-        //    }
-        //    catch (ArticleException ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
-
-        //[Route("GetArticleByText")]
-        //[HttpGet]
-        //public async Task<IActionResult> GetArticlesByText([FromBody] TextAdd textAdd)
-        //{
-        //    try
-        //    {
-        //        return Ok(await _articleService.GetArticleByText(textAdd.Text));
-        //    }
-        //    catch (ArticleException ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+ 
         [Route("GetUserArticles")]
         [Authorize(Roles = "Admin")]
         [HttpGet]
@@ -129,13 +108,13 @@ namespace Blog.Controllers
             }
         }
 
-        [HttpPut("EditArticle/{id}")]
-        public async Task<IActionResult> UpdateArticle([FromRoute] Guid id, [FromBody] ArticleDTO articleDTO)
+        [HttpPut("EditArticle/{id}/{userIdArt}")]
+        public async Task<IActionResult> UpdateArticle([FromRoute] string id, [FromRoute] string userIdArt,[FromBody] ArticleDTO articleDTO)
         {
             try
             {
-                articleDTO.UserId = UserId;
-                await _articleService.Update(id, articleDTO);
+                articleDTO.UserId = Guid.Parse(userIdArt);
+                await _articleService.Update(Guid.Parse(id), articleDTO);
                 return Ok();
             }
             catch (ArticleException ex)

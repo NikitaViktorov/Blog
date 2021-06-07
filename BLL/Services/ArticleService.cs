@@ -132,11 +132,32 @@ namespace BLL.Sevices
         //}
         public async Task Update(Guid id, ArticleDTO articleDTO)
         {
-            var article = await _unitOfWork.Articles.Get(id) ?? throw new ArticleException("Article doesn't exist!");
+            Article updateArticle = await _unitOfWork.Articles.Get(id) ?? throw new ArticleException("Article doesn't exist!");
+ 
+            Article searchArticle = _mapper.Map<Article>(articleDTO);
             
-            var updateArticle = _mapper.Map<Article>(articleDTO);
-            updateArticle.Id = id;
+            var tags = searchArticle.Tags.ToList();
+            
+            updateArticle.Text = searchArticle.Text;
+            updateArticle.Title = searchArticle.Title;
+            updateArticle.UserId = articleDTO.UserId;
 
+            updateArticle.Tags.Clear();
+
+            for (int i = 0; i < searchArticle.Tags.Count(); i++)
+            {
+                var tag = await _unitOfWork.Tags.GetByText(tags[i].Text);
+                if (tag != null)
+                {
+                    updateArticle.Tags.Remove(tag);
+                    updateArticle.Tags.Add(tag);
+                }
+                else
+                {
+                    updateArticle.Tags.Add(tags[i]);
+                }
+            }
+            
             await _unitOfWork.Articles.Update(updateArticle);
         }
     }

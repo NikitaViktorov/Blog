@@ -26,14 +26,12 @@ namespace DAL.Repositories
 
             await _db.SaveChangesAsync();
         }
-
         public async Task Delete(Guid id)
         {
             _db.Comments.Remove(await _db.Comments.FirstAsync(c => c.Id == id));
 
             await _db.SaveChangesAsync();
         }
-
         public async Task<Comment> Get(Guid id)
         {
             if (await _db.Comments.CountAsync(a => a.Id == id) == 0)
@@ -41,7 +39,6 @@ namespace DAL.Repositories
 
             return await _db.Comments.FirstAsync(a => a.Id == id);
         }
-
         public async Task<ICollection<Comment>> GetCommentsByArticles(Guid articleId)
         {
 
@@ -50,12 +47,10 @@ namespace DAL.Repositories
 
             return await _db.Comments.Where(a => a.ArticleId == articleId).ToListAsync();
         }
-
         public async Task<ICollection<Comment>> GetAll()
         {
             return await _db.Comments.ToListAsync();
         }
-
         public async Task Update(Comment item)
         {
             _db.Comments.Remove(await _db.Comments.FirstAsync(a => a.Id == item.Id));
@@ -64,7 +59,6 @@ namespace DAL.Repositories
 
             await _db.SaveChangesAsync();
         }
-
         public Task<ICollection<Comment>> GetCommentsByArticle(Guid articleId)
         {
             throw new NotImplementedException();
