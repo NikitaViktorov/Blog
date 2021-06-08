@@ -31,8 +31,7 @@ namespace DAL.Repositories
         }
         public async Task<Article> Get(Guid id)
         {
-            var article = await _db.Articles.Include(c => c.User).ThenInclude(c => c.Articles).Include(c => c.Tags).ThenInclude(c => c.Articles).Include(c => c.Comments).FirstOrDefaultAsync(a => a.Id == id);
-             
+            var article = await _db.Articles.Include(c => c.User).ThenInclude(c => c.Articles).Include(c => c.Tags).ThenInclude(c => c.Articles).Include(c => c.Comments).ThenInclude(c=> c.User).FirstOrDefaultAsync(a => a.Id == id);
             return article == null ? null : article;
         }
         public async Task<ICollection<Article>> GetAll()
@@ -58,14 +57,6 @@ namespace DAL.Repositories
             var article = await _db.Articles.Where(x => x.Text == text).FirstOrDefaultAsync();
 
             return article == null ? null : article;
-        }
-        public async Task AddTag(Guid articleId, Tag tag)
-        {
-            var article = await _db.Articles.Where(x => x.Id == articleId).FirstOrDefaultAsync();
-
-            article.Tags.Add(tag);
-
-            await _db.SaveChangesAsync();
         }
         public async Task<ICollection<Article>> GetArticlesByTag(Guid tagId)
         {

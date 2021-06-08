@@ -12,6 +12,5 @@ namespace DAL.Interfaces
         Task Delete(Guid id);
         Task<ICollection<Comment>> GetAll();
         Task<Comment> Get(Guid id);
-        Task<ICollection<Comment>> GetCommentsByArticle(Guid articleId);
     }
 }

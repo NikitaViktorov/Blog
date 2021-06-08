@@ -12,5 +12,7 @@ namespace BLL.DTOs
         public string Text { get; set; }
         public Guid ArticleId { get; set; }
         public ArticleDTO Article { get; set; }
+        public UserDTO User { get; set; }
+        public Guid UserId { get; set; }
     }
 }

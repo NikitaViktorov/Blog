@@ -76,6 +76,7 @@ namespace Blog.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [Route("CreateArticle/{userIdArt}")]
         [HttpPost]
         public async Task<IActionResult> CreateArticle([FromBody] ArticleDTO articleDTO, [FromRoute]string userIdArt)

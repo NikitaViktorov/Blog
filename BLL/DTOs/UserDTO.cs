@@ -29,5 +29,6 @@ namespace BLL.DTOs
         [Required]
         public Role Role { get; set; }
         public ICollection<ArticleDTO> Articles { get; set; }
+        public ICollection<CommentDTO> Comments { get; set; }
     }
 }

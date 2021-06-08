@@ -27,13 +27,14 @@ namespace DAL.EF
                     .HasConversion(x => x.ToString(),
                         x => (Role)Enum.Parse(typeof(Role), x));
             });
+            
             User user = new User
             {
                 Id = Guid.NewGuid(),
-                Email = "NikitaViktorov@gmail.com",
+                Email = "Fan@gmail.com",
                 Password = "12345",
-                Name = "Nikita",
-                Surname = "Viktorov",
+                Name = "Josh",
+                Surname = "Brown",
                 Role = Role.User
             };
             User user1 = new User
@@ -45,8 +46,10 @@ namespace DAL.EF
                 Surname = "Viktorov",
                 Role = Role.Admin
             };
+
             Tag tag = new Tag { Id = Guid.NewGuid(), Text = "#MU" };
             Tag tag1 = new Tag { Id = Guid.NewGuid(), Text = "#Football" };
+
             Article article = new Article
             {
                 Id = Guid.NewGuid(),
@@ -68,7 +71,8 @@ namespace DAL.EF
                 Text = "Испания - чемпион",
                 UserId = user.Id,
             };
-            Comment comment = new Comment { Id = Guid.NewGuid(), Text = "MU - The Champions!", ArticleId = article.Id};
+
+            Comment comment = new Comment { Id = Guid.NewGuid(), Text = "MU - The Champions!", ArticleId = article.Id,UserId = user1.Id};
 
             modelBuilder.Entity<User>().HasData
             (
@@ -84,24 +88,28 @@ namespace DAL.EF
                     article,article1,article2
                 }
              );
-           
             modelBuilder.Entity<Tag>().HasData(
                 new Tag[]
                 {
                     tag,tag1
                 });
-
             modelBuilder.Entity<Comment>().HasData(
                new Comment[]
                {
                     comment
                });
 
-            modelBuilder
-                .Entity<Article>()
+            modelBuilder.Entity<Comment>()
+                .HasOne(m => m.User)
+                .WithMany(t => t.Comments)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            modelBuilder.Entity<Article>()
                 .HasMany(p => p.Tags)
                 .WithMany(p => p.Articles)
                 .UsingEntity(j => j.HasData(new {ArticlesId = article.Id, TagsId = tag.Id },new { ArticlesId = article1.Id,TagsId = tag.Id}, new { ArticlesId = article2.Id, TagsId = tag1.Id }));
+
+            
         }
     }
 }

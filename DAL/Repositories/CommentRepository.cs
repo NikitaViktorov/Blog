@@ -58,9 +58,5 @@ namespace DAL.Repositories
 
             await _db.SaveChangesAsync();
         }
-        public Task<ICollection<Comment>> GetCommentsByArticle(Guid articleId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
