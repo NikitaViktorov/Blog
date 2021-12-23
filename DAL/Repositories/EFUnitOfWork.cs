@@ -10,10 +10,12 @@ namespace DAL.Repositories
         private ICommentRepository _commentRepository;
         private ITagRepository _tagRepository;
         private IUserRepository _userRepository;
+
         public EFUnitOfWork(BlogContext db)
         {
             _db = db;
         }
+
         public IArticleRepository Articles
         {
             get
@@ -35,6 +37,7 @@ namespace DAL.Repositories
                 return _commentRepository;
             }
         }
+
         public ITagRepository Tags
         {
             get
@@ -45,6 +48,7 @@ namespace DAL.Repositories
                 return _tagRepository;
             }
         }
+
         public IUserRepository Users
         {
             get

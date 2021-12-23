@@ -1,10 +1,10 @@
-﻿using BLL.DTOs;
+﻿using System;
+using System.Threading.Tasks;
+using BLL.DTOs;
 using BLL.Exceptions;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace Blog.Controllers
 {
@@ -13,6 +13,7 @@ namespace Blog.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+
         public UserController(IUserService userService)
         {
             _userService = userService;
@@ -27,7 +28,7 @@ namespace Blog.Controllers
                 return Ok(await _userService.GetAll());
             }
             catch (UserException ex)
-            { 
+            {
                 return NotFound(ex.Message);
             }
         }
@@ -87,7 +88,7 @@ namespace Blog.Controllers
 
                 return Ok();
             }
-            catch(UserException ex)
+            catch (UserException ex)
             {
                 return BadRequest(ex.Message);
             }

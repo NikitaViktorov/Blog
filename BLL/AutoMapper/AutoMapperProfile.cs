@@ -13,6 +13,7 @@ namespace BLL.AutoMapper
             CreateMap<TagDTO, Tag>().ReverseMap();
             CreateMap<UserDTO, User>().ReverseMap();
         }
+
         public static MapperConfiguration InitializeAutoMapper()
         {
             var mapperConfiguration = new MapperConfiguration(conf => conf.AddProfile(new AutoMapperProfile()));

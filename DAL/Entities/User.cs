@@ -1,13 +1,17 @@
-﻿using DAL.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using DAL.Enums;
 
 namespace DAL.Entities
 {
     public class User
     {
+        public User()
+        {
+            Articles = new List<Article>();
+            Comments = new List<Comment>();
+        }
+
         public Guid Id { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
@@ -16,10 +20,5 @@ namespace DAL.Entities
         public Role Role { get; set; }
         public ICollection<Article> Articles { get; set; }
         public ICollection<Comment> Comments { get; set; }
-        public User()
-        {
-            this.Articles = new List<Article>();
-            this.Comments = new List<Comment>();
-        }
     }
 }

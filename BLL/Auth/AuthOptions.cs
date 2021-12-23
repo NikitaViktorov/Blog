@@ -1,5 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System.Text;
+﻿using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BLL.Auth
 {
@@ -9,9 +9,10 @@ namespace BLL.Auth
         public string Audience { get; set; }
         public string Secret { get; set; }
         public int TokenLifeTime { get; set; }
+
         public SymmetricSecurityKey GetSymmetricSecurityKey()
         {
-            return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Secret));
+            return new(Encoding.ASCII.GetBytes(Secret));
         }
     }
 }

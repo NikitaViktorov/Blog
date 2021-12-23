@@ -1,9 +1,9 @@
-﻿using BLL.DTOs;
+﻿using System;
+using System.Threading.Tasks;
+using BLL.DTOs;
 using BLL.Exceptions;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace Blog.Controllers
 {
@@ -12,6 +12,7 @@ namespace Blog.Controllers
     public class CommentController : ControllerBase
     {
         private readonly ICommentService _commentService;
+
         public CommentController(ICommentService commentService)
         {
             _commentService = commentService;
@@ -42,10 +43,10 @@ namespace Blog.Controllers
                 return NotFound(ex.Message);
             }
         }
-        
+
         [Route("CreateComment/{id}")]
         [HttpPost]
-        public async Task<IActionResult> CreateComment([FromRoute]Guid id, [FromBody] CommentDTO commentDTO)
+        public async Task<IActionResult> CreateComment([FromRoute] Guid id, [FromBody] CommentDTO commentDTO)
         {
             try
             {
@@ -57,6 +58,7 @@ namespace Blog.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [Route("UpdateComment/{id}")]
         [HttpPut]
         public async Task<IActionResult> UpdateComment([FromRoute] Guid id, [FromBody] CommentDTO commentDTO)
@@ -71,6 +73,7 @@ namespace Blog.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [Route("DeleteComment/{id}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteComment([FromRoute] Guid id)
@@ -85,6 +88,5 @@ namespace Blog.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
     }
 }

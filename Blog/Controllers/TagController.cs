@@ -1,9 +1,9 @@
-﻿using BLL.DTOs;
+﻿using System;
+using System.Threading.Tasks;
+using BLL.DTOs;
 using BLL.Exceptions;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace Blog.Controllers
 {
@@ -12,6 +12,7 @@ namespace Blog.Controllers
     public class TagController : ControllerBase
     {
         private readonly ITagService _tagService;
+
         public TagController(ITagService tagService)
         {
             _tagService = tagService;
@@ -77,7 +78,7 @@ namespace Blog.Controllers
 
         [Route("DeleteTag/{id}")]
         [HttpDelete]
-        public async Task<IActionResult> DeleteTag([FromRoute]Guid id)
+        public async Task<IActionResult> DeleteTag([FromRoute] Guid id)
         {
             try
             {

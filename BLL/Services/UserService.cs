@@ -1,25 +1,27 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using BLL.AutoMapper;
 using BLL.DTOs;
 using BLL.Exceptions;
 using BLL.Interfaces;
 using DAL.Entities;
 using DAL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace BLL.Sevices
 {
     public class UserService : IUserService
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+
         public UserService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _mapper = AutoMapperProfile.InitializeAutoMapper().CreateMapper();
         }
+
         public async Task Create(UserDTO userDTO)
         {
             await _unitOfWork.Users.Create(_mapper.Map<User>(userDTO));
@@ -35,14 +37,14 @@ namespace BLL.Sevices
         public async Task<UserDTO> Get(Guid id)
         {
             var user = await _unitOfWork.Users.Get(id);
-            
+
             return _mapper.Map<UserDTO>(user) ?? throw new UserException("You don't get this user.User doesn't exist");
         }
 
         public async Task<ICollection<UserDTO>> GetAll()
         {
-            var users = await _unitOfWork.Users.GetAll(); 
-            
+            var users = await _unitOfWork.Users.GetAll();
+
             return _mapper.Map<ICollection<UserDTO>>(users) ?? throw new UserException("List of Users is empty");
         }
 
@@ -50,7 +52,7 @@ namespace BLL.Sevices
         {
             if (await _unitOfWork.Users.Get(id) == null)
                 throw new UserException("You don't update this user.User doesn't exist");
-            
+
             var updateUser = _mapper.Map<User>(userDTO);
             updateUser.Id = id;
 

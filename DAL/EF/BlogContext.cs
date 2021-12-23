@@ -1,7 +1,7 @@
-﻿using DAL.Entities;
+﻿using System;
+using DAL.Entities;
 using DAL.Enums;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace DAL.EF
 {
@@ -25,10 +25,10 @@ namespace DAL.EF
                 entity.Property(e => e.Role)
                     .HasMaxLength(50)
                     .HasConversion(x => x.ToString(),
-                        x => (Role)Enum.Parse(typeof(Role), x));
+                        x => (Role) Enum.Parse(typeof(Role), x));
             });
-            
-            User user = new User
+
+            var user = new User
             {
                 Id = Guid.NewGuid(),
                 Email = "Fan@gmail.com",
@@ -37,7 +37,7 @@ namespace DAL.EF
                 Surname = "Brown",
                 Role = Role.User
             };
-            User user1 = new User
+            var user1 = new User
             {
                 Id = Guid.NewGuid(),
                 Email = "Admin@gmail.com",
@@ -47,70 +47,51 @@ namespace DAL.EF
                 Role = Role.Admin
             };
 
-            Tag tag = new Tag { Id = Guid.NewGuid(), Text = "#MU" };
-            Tag tag1 = new Tag { Id = Guid.NewGuid(), Text = "#Football" };
+            var tag = new Tag {Id = Guid.NewGuid(), Text = "#MU"};
+            var tag1 = new Tag {Id = Guid.NewGuid(), Text = "#Football"};
 
-            Article article = new Article
+            var article = new Article
             {
                 Id = Guid.NewGuid(),
                 Title = "Футбольный клуб Манчестер Юнайтед",
                 Text = "МЮ - чемпион",
-                UserId = user.Id,
+                UserId = user.Id
             };
-            Article article1 = new Article
+            var article1 = new Article
             {
                 Id = Guid.NewGuid(),
                 Title = "Английский футбол",
                 Text = "Англия - чемпион",
-                UserId = user1.Id,
+                UserId = user1.Id
             };
-            Article article2 = new Article
+            var article2 = new Article
             {
                 Id = Guid.NewGuid(),
                 Title = "Испанский футбол",
                 Text = "Испания - чемпион",
-                UserId = user.Id,
+                UserId = user.Id
             };
 
-            Comment comment = new Comment { Id = Guid.NewGuid(), Text = "MU - The Champions!", ArticleId = article.Id,UserId = user1.Id};
+            var comment = new Comment
+                {Id = Guid.NewGuid(), Text = "MU - The Champions!", ArticleId = article.Id, UserId = user1.Id};
 
             modelBuilder.Entity<User>().HasData
-            (
-                new User[]
-                {
-                    user,user1
-                }
-            );
+                (user, user1);
             modelBuilder.Entity<Article>().HasData
-             (
-                new Article[]
-                {
-                    article,article1,article2
-                }
-             );
-            modelBuilder.Entity<Tag>().HasData(
-                new Tag[]
-                {
-                    tag,tag1
-                });
-            modelBuilder.Entity<Comment>().HasData(
-               new Comment[]
-               {
-                    comment
-               });
+                (article, article1, article2);
+            modelBuilder.Entity<Tag>().HasData(tag, tag1);
+            modelBuilder.Entity<Comment>().HasData(comment);
 
             modelBuilder.Entity<Comment>()
                 .HasOne(m => m.User)
                 .WithMany(t => t.Comments)
                 .OnDelete(DeleteBehavior.NoAction);
-            
+
             modelBuilder.Entity<Article>()
                 .HasMany(p => p.Tags)
                 .WithMany(p => p.Articles)
-                .UsingEntity(j => j.HasData(new {ArticlesId = article.Id, TagsId = tag.Id },new { ArticlesId = article1.Id,TagsId = tag.Id}, new { ArticlesId = article2.Id, TagsId = tag1.Id }));
-
-            
+                .UsingEntity(j => j.HasData(new {ArticlesId = article.Id, TagsId = tag.Id},
+                    new {ArticlesId = article1.Id, TagsId = tag.Id}, new {ArticlesId = article2.Id, TagsId = tag1.Id}));
         }
     }
 }
-    
