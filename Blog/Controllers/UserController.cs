@@ -1,10 +1,10 @@
-﻿using BLL.DTOs;
+﻿using System;
+using System.Threading.Tasks;
+using BLL.DTOs;
 using BLL.Exceptions;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace Blog.Controllers
 {
@@ -13,6 +13,7 @@ namespace Blog.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+
         public UserController(IUserService userService)
         {
             _userService = userService;
@@ -27,7 +28,7 @@ namespace Blog.Controllers
                 return Ok(await _userService.GetAll());
             }
             catch (UserException ex)
-            { 
+            {
                 return NotFound(ex.Message);
             }
         }
@@ -47,11 +48,11 @@ namespace Blog.Controllers
 
         [Route("CreateUser")]
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] UserDTO userDTO)
+        public async Task<IActionResult> CreateUser([FromBody] UserDto userDto)
         {
             try
             {
-                await _userService.Create(userDTO);
+                await _userService.Create(userDto);
 
                 return Ok();
             }
@@ -63,11 +64,11 @@ namespace Blog.Controllers
 
         [Route("UpdateUser/{id}")]
         [HttpPut]
-        public async Task<IActionResult> UpdateUser([FromRoute] Guid id, [FromBody] UserDTO userDTO)
+        public async Task<IActionResult> UpdateUser([FromRoute] Guid id, [FromBody] UserDto userDto)
         {
             try
             {
-                await _userService.Update(id, userDTO);
+                await _userService.Update(id, userDto);
 
                 return Ok();
             }
@@ -87,7 +88,7 @@ namespace Blog.Controllers
 
                 return Ok();
             }
-            catch(UserException ex)
+            catch (UserException ex)
             {
                 return BadRequest(ex.Message);
             }

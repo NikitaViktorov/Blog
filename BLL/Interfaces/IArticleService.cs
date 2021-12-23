@@ -1,20 +1,20 @@
-﻿using BLL.DTOs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BLL.DTOs;
 
 namespace BLL.Interfaces
 {
     public interface IArticleService
     {
-        Task Create(ArticleDTO articleDTO);
+        Task Create(ArticleDto articleDto);
         Task Delete(Guid id);
-        Task<ArticleDTO> Get(Guid id);
-        Task<ICollection<ArticleDTO>> GetAll();
-        Task<ICollection<ArticleDTO>> GetArticlesByTag(Guid tagId);
-        Task<ICollection<ArticleDTO>> GetUserArticles(Guid userId);
-        Task Update(Guid id, ArticleDTO articleDTO);
-        Task AddTag(Guid Article, TagDTO tagDTO);
-        Task<ArticleDTO> GetArticleByText(string text);
+        Task<ArticleDto> Get(Guid id);
+        Task<ICollection<ArticleDto>> GetAll();
+        Task<ICollection<ArticleDto>> GetArticlesByTag(Guid tagId);
+        Task<ICollection<ArticleDto>> GetUserArticles(Guid userId);
+        Task Update(Guid id, ArticleDto articleDto);
+        Task AddTag(Guid article, TagDto tagDto);
+        Task<ArticleDto> GetArticleByText(string text);
     }
 }

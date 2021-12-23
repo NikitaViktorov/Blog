@@ -1,16 +1,16 @@
-﻿using BLL.DTOs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BLL.DTOs;
 
 namespace BLL.Interfaces
 {
     public interface IUserService
     {
-        Task Create(UserDTO userDTO);
+        Task Create(UserDto userDto);
         Task Delete(Guid id);
-        Task<UserDTO> Get(Guid id);
-        Task<ICollection<UserDTO>> GetAll();
-        Task Update(Guid id, UserDTO userDTO);
+        Task<UserDto> Get(Guid id);
+        Task<ICollection<UserDto>> GetAll();
+        Task Update(Guid id, UserDto userDto);
     }
 }

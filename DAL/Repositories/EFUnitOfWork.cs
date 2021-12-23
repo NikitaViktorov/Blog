@@ -3,57 +3,25 @@ using DAL.Interfaces;
 
 namespace DAL.Repositories
 {
-    public class EFUnitOfWork : IUnitOfWork
+    public class EfUnitOfWork : IUnitOfWork
     {
         private readonly BlogContext _db;
         private IArticleRepository _articleRepository;
         private ICommentRepository _commentRepository;
         private ITagRepository _tagRepository;
         private IUserRepository _userRepository;
-        public EFUnitOfWork(BlogContext db)
+
+        public EfUnitOfWork(BlogContext db)
         {
             _db = db;
         }
-        public IArticleRepository Articles
-        {
-            get
-            {
-                if (_articleRepository == null)
-                    _articleRepository = new ArticleRepository(_db);
 
-                return _articleRepository;
-            }
-        }
+        public IArticleRepository Articles => _articleRepository ?? (_articleRepository = new ArticleRepository(_db));
 
-        public ICommentRepository Comments
-        {
-            get
-            {
-                if (_commentRepository == null)
-                    _commentRepository = new CommentRepository(_db);
+        public ICommentRepository Comments => _commentRepository ?? (_commentRepository = new CommentRepository(_db));
 
-                return _commentRepository;
-            }
-        }
-        public ITagRepository Tags
-        {
-            get
-            {
-                if (_tagRepository == null)
-                    _tagRepository = new TagRepository(_db);
+        public ITagRepository Tags => _tagRepository ?? (_tagRepository = new TagRepository(_db));
 
-                return _tagRepository;
-            }
-        }
-        public IUserRepository Users
-        {
-            get
-            {
-                if (_userRepository == null)
-                    _userRepository = new UserRepository(_db);
-
-                return _userRepository;
-            }
-        }
+        public IUserRepository Users => _userRepository ?? (_userRepository = new UserRepository(_db));
     }
 }

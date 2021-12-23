@@ -1,9 +1,9 @@
-﻿using BLL.DTOs;
+﻿using System;
+using System.Threading.Tasks;
+using BLL.DTOs;
 using BLL.Exceptions;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace Blog.Controllers
 {
@@ -12,6 +12,7 @@ namespace Blog.Controllers
     public class TagController : ControllerBase
     {
         private readonly ITagService _tagService;
+
         public TagController(ITagService tagService)
         {
             _tagService = tagService;
@@ -46,11 +47,11 @@ namespace Blog.Controllers
 
         [Route("CreateTag")]
         [HttpPost]
-        public async Task<IActionResult> CreateTag([FromBody] TagDTO tagDTO)
+        public async Task<IActionResult> CreateTag([FromBody] TagDto tagDto)
         {
             try
             {
-                await _tagService.Create(tagDTO);
+                await _tagService.Create(tagDto);
                 return Ok();
             }
             catch (TagException ex)
@@ -61,11 +62,11 @@ namespace Blog.Controllers
 
         [Route("UpdateTag/{id}")]
         [HttpPut]
-        public async Task<IActionResult> UpdateTag([FromRoute] Guid id, [FromBody] TagDTO tagDTO)
+        public async Task<IActionResult> UpdateTag([FromRoute] Guid id, [FromBody] TagDto tagDto)
         {
             try
             {
-                await _tagService.Update(id, tagDTO);
+                await _tagService.Update(id, tagDto);
 
                 return Ok();
             }
@@ -77,7 +78,7 @@ namespace Blog.Controllers
 
         [Route("DeleteTag/{id}")]
         [HttpDelete]
-        public async Task<IActionResult> DeleteTag([FromRoute]Guid id)
+        public async Task<IActionResult> DeleteTag([FromRoute] Guid id)
         {
             try
             {
