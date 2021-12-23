@@ -48,11 +48,11 @@ namespace Blog.Controllers
 
         [Route("CreateUser")]
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] UserDTO userDTO)
+        public async Task<IActionResult> CreateUser([FromBody] UserDto userDto)
         {
             try
             {
-                await _userService.Create(userDTO);
+                await _userService.Create(userDto);
 
                 return Ok();
             }
@@ -64,11 +64,11 @@ namespace Blog.Controllers
 
         [Route("UpdateUser/{id}")]
         [HttpPut]
-        public async Task<IActionResult> UpdateUser([FromRoute] Guid id, [FromBody] UserDTO userDTO)
+        public async Task<IActionResult> UpdateUser([FromRoute] Guid id, [FromBody] UserDto userDto)
         {
             try
             {
-                await _userService.Update(id, userDTO);
+                await _userService.Update(id, userDto);
 
                 return Ok();
             }

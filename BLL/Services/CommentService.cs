@@ -9,7 +9,7 @@ using BLL.Interfaces;
 using DAL.Entities;
 using DAL.Interfaces;
 
-namespace BLL.Sevices
+namespace BLL.Services
 {
     public class CommentService : ICommentService
     {
@@ -22,14 +22,14 @@ namespace BLL.Sevices
             _mapper = AutoMapperProfile.InitializeAutoMapper().CreateMapper();
         }
 
-        public async Task Create(Guid ArticleId, CommentDTO commentDTO)
+        public async Task Create(Guid articleId, CommentDto commentDto)
         {
-            var article = await _unitOfWork.Articles.Get(ArticleId);
+            var article = await _unitOfWork.Articles.Get(articleId);
 
             if (article == null)
                 throw new CommentException("Article doesn't exist.You don't create commentary because of that!");
 
-            var comment = _mapper.Map<Comment>(commentDTO);
+            var comment = _mapper.Map<Comment>(commentDto);
 
             comment.ArticleId = article.Id;
 
@@ -44,27 +44,27 @@ namespace BLL.Sevices
             await _unitOfWork.Comments.Delete(id);
         }
 
-        public async Task<CommentDTO> Get(Guid id)
+        public async Task<CommentDto> Get(Guid id)
         {
             var comment = await _unitOfWork.Comments.Get(id);
 
-            return _mapper.Map<CommentDTO>(comment) ?? throw new CommentException("Commentar doesn't exist");
+            return _mapper.Map<CommentDto>(comment) ?? throw new CommentException("Comment doesn't exist");
         }
 
-        public async Task<ICollection<CommentDTO>> GetAll()
+        public async Task<ICollection<CommentDto>> GetAll()
         {
-            var comments = _mapper.Map<ICollection<CommentDTO>>(await _unitOfWork.Comments.GetAll());
+            var comments = _mapper.Map<ICollection<CommentDto>>(await _unitOfWork.Comments.GetAll());
 
             return comments ?? throw new CommentException("List of commentaries is empty");
         }
 
-        public async Task Update(Guid id, CommentDTO commentDTO)
+        public async Task Update(Guid id, CommentDto commentDto)
         {
             var comment = await _unitOfWork.Comments.Get(id);
             if (comment == null)
-                throw new CommentException("You can't update this comment.Because commentary doen't exist!");
+                throw new CommentException("You can't update this comment.Because commentary doesn't exist!");
 
-            var updateComment = _mapper.Map<Comment>(commentDTO);
+            var updateComment = _mapper.Map<Comment>(commentDto);
             updateComment.Id = id;
             updateComment.ArticleId = comment.ArticleId;
             await _unitOfWork.Comments.Update(updateComment);

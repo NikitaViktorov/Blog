@@ -47,11 +47,11 @@ namespace Blog.Controllers
 
         [Route("CreateTag")]
         [HttpPost]
-        public async Task<IActionResult> CreateTag([FromBody] TagDTO tagDTO)
+        public async Task<IActionResult> CreateTag([FromBody] TagDto tagDto)
         {
             try
             {
-                await _tagService.Create(tagDTO);
+                await _tagService.Create(tagDto);
                 return Ok();
             }
             catch (TagException ex)
@@ -62,11 +62,11 @@ namespace Blog.Controllers
 
         [Route("UpdateTag/{id}")]
         [HttpPut]
-        public async Task<IActionResult> UpdateTag([FromRoute] Guid id, [FromBody] TagDTO tagDTO)
+        public async Task<IActionResult> UpdateTag([FromRoute] Guid id, [FromBody] TagDto tagDto)
         {
             try
             {
-                await _tagService.Update(id, tagDTO);
+                await _tagService.Update(id, tagDto);
 
                 return Ok();
             }

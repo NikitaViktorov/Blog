@@ -46,11 +46,11 @@ namespace Blog.Controllers
 
         [Route("CreateComment/{id}")]
         [HttpPost]
-        public async Task<IActionResult> CreateComment([FromRoute] Guid id, [FromBody] CommentDTO commentDTO)
+        public async Task<IActionResult> CreateComment([FromRoute] Guid id, [FromBody] CommentDto commentDto)
         {
             try
             {
-                await _commentService.Create(id, commentDTO);
+                await _commentService.Create(id, commentDto);
                 return Ok();
             }
             catch (CommentException ex)
@@ -61,11 +61,11 @@ namespace Blog.Controllers
 
         [Route("UpdateComment/{id}")]
         [HttpPut]
-        public async Task<IActionResult> UpdateComment([FromRoute] Guid id, [FromBody] CommentDTO commentDTO)
+        public async Task<IActionResult> UpdateComment([FromRoute] Guid id, [FromBody] CommentDto commentDto)
         {
             try
             {
-                await _commentService.Update(id, commentDTO);
+                await _commentService.Update(id, commentDto);
                 return Ok();
             }
             catch (CommentException ex)

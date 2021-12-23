@@ -33,7 +33,7 @@ namespace Blog.Controllers
             var user = await AuthenticateUser(request.Email, request.Password);
             if (user != null)
             {
-                var token = GenerateJWT(user);
+                var token = GenerateJwt(user);
                 return Ok(new
                 {
                     access_token = token
@@ -43,14 +43,14 @@ namespace Blog.Controllers
             return Unauthorized();
         }
 
-        private async Task<UserDTO> AuthenticateUser(string email, string password)
+        private async Task<UserDto> AuthenticateUser(string email, string password)
         {
-            IEnumerable<UserDTO> users = await _userService.GetAll();
+            IEnumerable<UserDto> users = await _userService.GetAll();
             var allUsers = users.ToList();
             return allUsers.SingleOrDefault(u => u.Email == email && u.Password == password);
         }
 
-        private string GenerateJWT(UserDTO userDTO)
+        private string GenerateJwt(UserDto userDto)
         {
             var authParams = _authOptions.Value;
 
@@ -59,14 +59,14 @@ namespace Blog.Controllers
 
             var claims = new List<Claim>
             {
-                new(JwtRegisteredClaimNames.Email, userDTO.Email),
-                new(JwtRegisteredClaimNames.Sub, userDTO.Id.ToString())
+                new(JwtRegisteredClaimNames.Email, userDto.Email),
+                new(JwtRegisteredClaimNames.Sub, userDto.Id.ToString()),
+                new("Password", userDto.Password),
+                new("Name", userDto.Name),
+                new("Surname", userDto.Surname),
+                new(ClaimsIdentity.DefaultRoleClaimType, userDto.Role.ToString())
             };
 
-            claims.Add(new Claim("Password", userDTO.Password));
-            claims.Add(new Claim("Name", userDTO.Name));
-            claims.Add(new Claim("Surname", userDTO.Surname));
-            claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, userDTO.Role.ToString()));
 
             var token = new JwtSecurityToken(authParams.Issuer,
                 authParams.Audience,

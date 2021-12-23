@@ -36,7 +36,7 @@ namespace DAL.Repositories
             var user = await _db.Users.Include(c => c.Articles).ThenInclude(c => c.Tags)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            return user == null ? null : user;
+            return user;
         }
 
         public async Task<ICollection<User>> GetAll()

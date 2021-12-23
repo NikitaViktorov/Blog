@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.EF
 {
-    public class BlogContext : DbContext
+    public sealed class BlogContext : DbContext
     {
         public BlogContext(DbContextOptions<BlogContext> options)
             : base(options)

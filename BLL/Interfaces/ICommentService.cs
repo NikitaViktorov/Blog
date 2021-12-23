@@ -7,10 +7,10 @@ namespace BLL.Interfaces
 {
     public interface ICommentService
     {
-        Task Create(Guid Articleid, CommentDTO commentDTO);
+        Task Create(Guid articleId, CommentDto commentDto);
         Task Delete(Guid id);
-        Task<CommentDTO> Get(Guid id);
-        Task<ICollection<CommentDTO>> GetAll();
-        Task Update(Guid id, CommentDTO commentDTO);
+        Task<CommentDto> Get(Guid id);
+        Task<ICollection<CommentDto>> GetAll();
+        Task Update(Guid id, CommentDto commentDto);
     }
 }

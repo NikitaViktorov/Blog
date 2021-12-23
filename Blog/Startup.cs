@@ -1,6 +1,6 @@
 using BLL.Auth;
 using BLL.Interfaces;
-using BLL.Sevices;
+using BLL.Services;
 using DAL.EF;
 using DAL.Interfaces;
 using DAL.Repositories;
@@ -68,7 +68,7 @@ namespace Blog
                     }
                 });
             });
-            services.AddScoped<IUnitOfWork, EFUnitOfWork>();
+            services.AddScoped<IUnitOfWork, EfUnitOfWork>();
             services.AddTransient<IArticleRepository, ArticleRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();
             services.AddTransient<ITagRepository, TagRepository>();

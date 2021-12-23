@@ -81,13 +81,13 @@ namespace Blog.Controllers
 
         [Route("CreateArticle/{userIdArt}")]
         [HttpPost]
-        public async Task<IActionResult> CreateArticle([FromBody] ArticleDTO articleDTO, [FromRoute] string userIdArt)
+        public async Task<IActionResult> CreateArticle([FromBody] ArticleDto articleDto, [FromRoute] string userIdArt)
         {
             try
             {
-                articleDTO.UserId = Guid.Parse(userIdArt);
+                articleDto.UserId = Guid.Parse(userIdArt);
 
-                await _articleService.Create(articleDTO);
+                await _articleService.Create(articleDto);
 
                 return Ok();
             }
@@ -97,13 +97,13 @@ namespace Blog.Controllers
             }
         }
 
-        [Route("AddTag/{ArticleId}")]
+        [Route("AddTag/{articleId}")]
         [HttpPost]
-        public async Task<IActionResult> AddTag([FromRoute] Guid ArticleId, [FromBody] TagDTO tagDTO)
+        public async Task<IActionResult> AddTag([FromRoute] Guid articleId, [FromBody] TagDto tagDto)
         {
             try
             {
-                await _articleService.AddTag(ArticleId, tagDTO);
+                await _articleService.AddTag(articleId, tagDto);
 
                 return Ok();
             }
@@ -115,13 +115,13 @@ namespace Blog.Controllers
 
         [HttpPut("EditArticle/{id}/{userIdArt}")]
         public async Task<IActionResult> UpdateArticle([FromRoute] string id, [FromRoute] string userIdArt,
-            [FromBody] ArticleDTO articleDTO)
+            [FromBody] ArticleDto articleDto)
         {
             try
             {
-                articleDTO.UserId = Guid.Parse(userIdArt);
+                articleDto.UserId = Guid.Parse(userIdArt);
 
-                await _articleService.Update(Guid.Parse(id), articleDTO);
+                await _articleService.Update(Guid.Parse(id), articleDto);
 
                 return Ok();
             }

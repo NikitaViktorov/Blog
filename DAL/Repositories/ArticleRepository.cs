@@ -37,7 +37,7 @@ namespace DAL.Repositories
             var article = await _db.Articles.Include(c => c.User).ThenInclude(c => c.Articles).Include(c => c.Tags)
                 .ThenInclude(c => c.Articles).Include(c => c.Comments).ThenInclude(c => c.User)
                 .FirstOrDefaultAsync(a => a.Id == id);
-            return article == null ? null : article;
+            return article;
         }
 
         public async Task<ICollection<Article>> GetAll()
@@ -59,14 +59,14 @@ namespace DAL.Repositories
         {
             var articles = await _db.Articles.Where(x => x.UserId == userId).ToListAsync();
 
-            return articles == null ? null : articles;
+            return articles;
         }
 
         public async Task<Article> GetArticleByText(string text)
         {
             var article = await _db.Articles.Where(x => x.Text == text).FirstOrDefaultAsync();
 
-            return article == null ? null : article;
+            return article;
         }
 
         public async Task<ICollection<Article>> GetArticlesByTag(Guid tagId)
@@ -76,7 +76,7 @@ namespace DAL.Repositories
             var articles = await _db.Articles.Where(a => a.Tags.Contains(currentTag)).Include(c => c.User)
                 .Include(c => c.Comments).Include(s => s.Tags).ThenInclude(c => c.Articles).ToListAsync();
 
-            return articles == null ? null : articles;
+            return articles;
         }
     }
 }

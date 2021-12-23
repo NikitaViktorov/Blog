@@ -5,7 +5,7 @@ using DAL.Enums;
 
 namespace BLL.DTOs
 {
-    public class UserDTO
+    public class UserDto
     {
         public Guid Id { get; set; }
 
@@ -22,7 +22,7 @@ namespace BLL.DTOs
 
         [Required] public Role Role { get; set; }
 
-        public ICollection<ArticleDTO> Articles { get; set; }
-        public ICollection<CommentDTO> Comments { get; set; }
+        public ICollection<ArticleDto> Articles { get; set; }
+        public ICollection<CommentDto> Comments { get; set; }
     }
 }

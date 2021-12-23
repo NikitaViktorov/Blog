@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using BLL.DTOs;
-using BLL.Sevices;
+using BLL.Services;
 using DAL.Entities;
 using DAL.Interfaces;
 using Moq;
@@ -58,7 +57,7 @@ namespace UnitTests.ServicesTests
         public async Task Create_RepositoryInvokes()
         {
             //Act
-            await _tagService.Create(It.IsAny<TagDTO>());
+            await _tagService.Create(It.IsAny<TagDto>());
 
             //Assert
             _unitOfWorkMock.Verify(uow => uow.Tags);
@@ -69,7 +68,7 @@ namespace UnitTests.ServicesTests
         public async Task Update_RepositoryInvokes()
         {
             //Arrange
-            var tagDto = new TagDTO();
+            var tagDto = new TagDto();
 
             //Act
             await _tagService.Update(It.IsAny<Guid>(), tagDto);
