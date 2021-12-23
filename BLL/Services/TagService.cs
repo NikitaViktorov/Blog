@@ -54,8 +54,9 @@ namespace BLL.Sevices
             if (await _unitOfWork.Tags.Get(id) == null)
                 throw new TagException("Tag doesn't exist.You don't update this tag");
 
-            var updateTag = _mapper.Map<Tag>(tagDTO);
-            updateTag.Id = id;
+            var updateTag = _mapper.Map<Tag>(tagDTO,
+                t => t.AfterMap(((o,
+                    tag) => tag.Id = id)));
             await _unitOfWork.Tags.Update(updateTag);
         }
     }
