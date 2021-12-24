@@ -1,4 +1,3 @@
-using AutoMapper;
 using BLL.Auth;
 using BLL.AutoMapper;
 using BLL.Interfaces;

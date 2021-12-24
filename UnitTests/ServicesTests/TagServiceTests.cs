@@ -14,10 +14,10 @@ namespace UnitTests.ServicesTests
 {
     public class TagServiceTests
     {
-        private readonly Mock<ITagRepository> _tagRepositoryMock;
         private readonly TagService _tagService;
-        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
         private readonly Mock<IMapper> _mapperMock;
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        private readonly Mock<ITagRepository> _tagRepositoryMock;
 
         public TagServiceTests()
         {

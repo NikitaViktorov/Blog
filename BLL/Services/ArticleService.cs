@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using BLL.AutoMapper;
 using BLL.DTOs;
 using BLL.Exceptions;
 using BLL.Interfaces;
@@ -23,6 +22,12 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Что это блять, исправь и допиши юнит тест
+        /// </summary>
+        /// <param name="articleId"></param>
+        /// <param name="tagDto"></param>
+        /// <returns>нет записи в бд</returns>
         public async Task AddTag(Guid articleId, TagDto tagDto)
         {
             var article = await _unitOfWork.Articles.Get(articleId);
@@ -34,7 +39,6 @@ namespace BLL.Services
 
         public async Task Create(ArticleDto articleDto)
         {
-            articleDto.Id = Guid.NewGuid();
             var article = _mapper.Map<Article>(articleDto);
 
             var articles = article.Tags.ToList();
@@ -66,32 +70,30 @@ namespace BLL.Services
 
         public async Task<ICollection<ArticleDto>> GetAll()
         {
-            var articles = await _unitOfWork.Articles.GetAll() ??
-                           throw new ArticleException("List of articles is empty!");
+            var articles = _mapper.Map<ICollection<ArticleDto>>(await _unitOfWork.Articles.GetAll());
 
-            return _mapper.Map<ICollection<ArticleDto>>(articles);
+            return articles ?? throw new ArticleException("List of articles is empty!");
         }
 
         public async Task<ArticleDto> GetArticleByText(string text)
         {
-            var article = await _unitOfWork.Articles.GetArticleByText(text) ??
-                          throw new ArticleException("Article doesn't exist");
+            var article = _mapper.Map<ArticleDto>(await _unitOfWork.Articles.GetArticleByText(text));
 
-            return _mapper.Map<ArticleDto>(article);
+            return article ?? throw new ArticleException("Article doesn't exist");
         }
 
         public async Task<ICollection<ArticleDto>> GetArticlesByTag(Guid tagId)
         {
-            var articles = await _unitOfWork.Articles.GetArticlesByTag(tagId);
-            if (articles == null) throw new ArticleException("Articles don't exist");
-            return _mapper.Map<List<ArticleDto>>(articles);
+            var articles = _mapper.Map<ICollection<ArticleDto>>(await _unitOfWork.Articles.GetArticlesByTag(tagId));
+            
+            return articles ?? throw new ArticleException("Articles don't exist");
         }
 
         public async Task<ICollection<ArticleDto>> GetUserArticles(Guid userId)
         {
-            var articles = await _unitOfWork.Articles.GetUserArticles(userId);
-            if (articles == null) throw new ArticleException("Articles don't exist");
-            return _mapper.Map<List<ArticleDto>>(articles);
+            var articles = _mapper.Map<ICollection<ArticleDto>>(await _unitOfWork.Articles.GetUserArticles(userId));
+
+            return articles ?? throw new ArticleException("Articles don't exist");
         }
 
         public async Task Update(Guid id, ArticleDto articleDto)
@@ -99,13 +101,14 @@ namespace BLL.Services
             var updateArticle = await _unitOfWork.Articles.Get(id) ??
                                 throw new ArticleException("Article doesn't exist!");
 
-            var searchArticle = _mapper.Map<Article>(articleDto);
+            var searchArticle = _mapper.Map<Article>(articleDto,
+                opt => opt.AfterMap((o,
+                    article) => article.Id = id));
 
             var tags = searchArticle.Tags.ToList();
 
             updateArticle.Text = searchArticle.Text;
             updateArticle.Title = searchArticle.Title;
-            updateArticle.UserId = articleDto.UserId;
 
             updateArticle.Tags.Clear();
 
