@@ -1,4 +1,6 @@
+using AutoMapper;
 using BLL.Auth;
+using BLL.AutoMapper;
 using BLL.Interfaces;
 using BLL.Services;
 using DAL.EF;
@@ -68,6 +70,7 @@ namespace Blog
                     }
                 });
             });
+
             services.AddScoped<IUnitOfWork, EfUnitOfWork>();
             services.AddTransient<IArticleRepository, ArticleRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();
@@ -77,6 +80,8 @@ namespace Blog
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<ITagService, TagService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddSingleton(_ => AutoMapperProfile.InitializeAutoMapper().CreateMapper());
+
             var authOptionsConfiguration = Configuration.GetSection("Auth");
             var authOptions = Configuration.GetSection("Auth").Get<AuthOptions>();
             services.Configure<AuthOptions>(authOptionsConfiguration);
