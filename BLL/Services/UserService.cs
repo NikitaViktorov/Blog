@@ -16,10 +16,10 @@ namespace BLL.Services
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UserService(IUnitOfWork unitOfWork)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-            _mapper = AutoMapperProfile.InitializeAutoMapper().CreateMapper();
+            _mapper = mapper;
         }
 
         public async Task Create(UserDto userDto)

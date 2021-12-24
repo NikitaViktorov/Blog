@@ -17,10 +17,10 @@ namespace BLL.Services
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ArticleService(IUnitOfWork unitOfWork)
+        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-            _mapper = AutoMapperProfile.InitializeAutoMapper().CreateMapper();
+            _mapper = mapper;
         }
 
         public async Task AddTag(Guid articleId, TagDto tagDto)

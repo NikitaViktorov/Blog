@@ -16,11 +16,10 @@ namespace BLL.Services
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public TagService(IUnitOfWork unitOfWork)
+        public TagService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-
-            _mapper = AutoMapperProfile.InitializeAutoMapper().CreateMapper();
+            _mapper = mapper;
         }
 
         public async Task Create(TagDto tagDto)
@@ -54,8 +53,8 @@ namespace BLL.Services
             if (await _unitOfWork.Tags.Get(id) == null)
                 throw new TagException("Tag doesn't exist.You don't update this tag");
 
-            var updateTag = _mapper.Map<Tag>(source: tagDto,
-                opts: t => t.AfterMap((_,
+            var updateTag = _mapper.Map<Tag>(tagDto,
+                t => t.AfterMap((_,
                     tag) => tag.Id = id));
             await _unitOfWork.Tags.Update(updateTag);
         }

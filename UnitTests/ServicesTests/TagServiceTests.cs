@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using BLL.DTOs;
 using BLL.Services;
 using DAL.Entities;
@@ -15,12 +17,14 @@ namespace UnitTests.ServicesTests
         private readonly Mock<ITagRepository> _tagRepositoryMock;
         private readonly TagService _tagService;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        private readonly Mock<IMapper> _mapperMock;
 
         public TagServiceTests()
         {
             var fakeData = new FakeData();
             _tagRepositoryMock = new Mock<ITagRepository>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _mapperMock = new Mock<IMapper>();
 
             _tagRepositoryMock.Setup(r => r.Get(It.IsAny<Guid>()))
                 .ReturnsAsync(fakeData.Tags.First());
@@ -28,29 +32,39 @@ namespace UnitTests.ServicesTests
             _unitOfWorkMock.Setup(u => u.Tags)
                 .Returns(_tagRepositoryMock.Object);
 
-            _tagService = new TagService(_unitOfWorkMock.Object);
+            _tagService = new TagService(_unitOfWorkMock.Object, _mapperMock.Object);
         }
 
         [Fact]
         public async Task Get_RepositoryInvokes()
         {
+            //Arrange
+            _mapperMock.Setup(mapper => mapper.Map<TagDto>(It.IsAny<Tag>()))
+                .Returns(new TagDto());
+
             //Act
             await _tagService.Get(It.IsAny<Guid>());
 
             //Assert
             _unitOfWorkMock.Verify(uow => uow.Tags);
             _tagRepositoryMock.Verify(r => r.Get(It.IsAny<Guid>()));
+            _mapperMock.Verify(mapper => mapper.Map<TagDto>(It.IsAny<Tag>()));
         }
 
         [Fact]
         public async Task GetAll_RepositoryInvokes()
         {
+            //Arrange
+            _mapperMock.Setup(mapper => mapper.Map<ICollection<TagDto>>(It.IsAny<ICollection<Tag>>()))
+                .Returns(new List<TagDto>());
+
             //Act
             await _tagService.GetAll();
 
             //Assert
             _unitOfWorkMock.Verify(uow => uow.Tags);
             _tagRepositoryMock.Verify(r => r.GetAll());
+            _mapperMock.Verify(mapper => mapper.Map<ICollection<TagDto>>(It.IsAny<ICollection<Tag>>()));
         }
 
         [Fact]
@@ -67,11 +81,8 @@ namespace UnitTests.ServicesTests
         [Fact]
         public async Task Update_RepositoryInvokes()
         {
-            //Arrange
-            var tagDto = new TagDto();
-
             //Act
-            await _tagService.Update(It.IsAny<Guid>(), tagDto);
+            await _tagService.Update(It.IsAny<Guid>(), It.IsAny<TagDto>());
 
             //Assert
             _unitOfWorkMock.Verify(uow => uow.Tags);
