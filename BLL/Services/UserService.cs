@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using BLL.AutoMapper;
 using BLL.DTOs;
 using BLL.Exceptions;
 using BLL.Interfaces;
