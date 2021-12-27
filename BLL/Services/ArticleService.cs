@@ -23,7 +23,7 @@ namespace BLL.Services
         }
 
         /// <summary>
-        /// Что это блять, исправь и допиши юнит тест
+        ///     Что это блять, исправь и допиши юнит тест
         /// </summary>
         /// <param name="articleId"></param>
         /// <param name="tagDto"></param>
@@ -37,10 +37,14 @@ namespace BLL.Services
             article.Tags.Add(_mapper.Map<Tag>(tagDto));
         }
 
-        public async Task Create(ArticleDto articleDto)
+        public async Task Create(ArticleDto articleDto, string userId)
         {
-            var article = _mapper.Map<Article>(articleDto);
+            var article = _mapper.Map<Article>(articleDto,
+                opts =>
+                    opts.BeforeMap((o,
+                        dto) => dto.UserId = Guid.Parse(userId)));
 
+            //Что это? из-за этого падает тест
             var articles = article.Tags.ToList();
             for (var i = 0; i < article.Tags.Count; i++)
             {
@@ -85,7 +89,7 @@ namespace BLL.Services
         public async Task<ICollection<ArticleDto>> GetArticlesByTag(Guid tagId)
         {
             var articles = _mapper.Map<ICollection<ArticleDto>>(await _unitOfWork.Articles.GetArticlesByTag(tagId));
-            
+
             return articles ?? throw new ArticleException("Articles don't exist");
         }
 

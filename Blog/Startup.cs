@@ -20,9 +20,12 @@ namespace Blog
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _currentEnvironment;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment currentEnvironment)
         {
             Configuration = configuration;
+            _currentEnvironment = currentEnvironment;
         }
 
         public IConfiguration Configuration { get; }
@@ -30,11 +33,13 @@ namespace Blog
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<BlogContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+
+            AddDb(services);
+
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+
+            #region swagger
 
             services.AddSwaggerGen(swagger =>
             {
@@ -70,16 +75,41 @@ namespace Blog
                 });
             });
 
-            services.AddScoped<IUnitOfWork, EfUnitOfWork>();
-            services.AddTransient<IArticleRepository, ArticleRepository>();
-            services.AddTransient<ICommentRepository, CommentRepository>();
-            services.AddTransient<ITagRepository, TagRepository>();
-            services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IArticleService, ArticleService>();
-            services.AddTransient<ICommentService, CommentService>();
-            services.AddTransient<ITagService, TagService>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddSingleton(_ => AutoMapperProfile.InitializeAutoMapper().CreateMapper());
+            #endregion
+
+            AddAuth(services);
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
+            });
+            services.AddControllersWithViews();
+            services.AddAuthorization();
+
+            ConfigureDependencies(services);
+        }
+
+        private void AddDb(IServiceCollection services)
+        {
+            if (_currentEnvironment.IsEnvironment("Testing"))
+                services.AddDbContext<BlogContext>(options =>
+                    options.UseInMemoryDatabase("TestDB"));
+            else
+                services.AddDbContext<BlogContext>(options =>
+                    options.UseSqlServer(
+                        Configuration.GetConnectionString("DefaultConnection")));
+        }
+
+        private void AddAuth(IServiceCollection services)
+        {
+            if (_currentEnvironment.IsEnvironment("Testing"))
+                return;
 
             var authOptionsConfiguration = Configuration.GetSection("Auth");
             var authOptions = Configuration.GetSection("Auth").Get<AuthOptions>();
@@ -102,18 +132,20 @@ namespace Blog
                         ValidateIssuerSigningKey = true
                     };
                 });
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(
-                    builder =>
-                    {
-                        builder.AllowAnyOrigin()
-                            .AllowAnyMethod()
-                            .AllowAnyHeader();
-                    });
-            });
-            services.AddControllersWithViews();
-            services.AddAuthorization();
+        }
+
+        public virtual void ConfigureDependencies(IServiceCollection services)
+        {
+            services.AddScoped<IUnitOfWork, EfUnitOfWork>();
+            services.AddTransient<IArticleRepository, ArticleRepository>();
+            services.AddTransient<ICommentRepository, CommentRepository>();
+            services.AddTransient<ITagRepository, TagRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IArticleService, ArticleService>();
+            services.AddTransient<ICommentService, CommentService>();
+            services.AddTransient<ITagService, TagService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddSingleton(_ => AutoMapperProfile.InitializeAutoMapper().CreateMapper());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

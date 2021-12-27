@@ -10,14 +10,14 @@ using DAL.Interfaces;
 using Moq;
 using Xunit;
 
-namespace UnitTests.ServicesTests
+namespace Tests.Unit_Tests.ServicesTests
 {
     public class ArticleServiceTests
     {
+        private readonly Mock<IArticleRepository> _articleRepositoryMock;
         private readonly ArticleService _articleService;
         private readonly Mock<IMapper> _mapperMock;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-        private readonly Mock<IArticleRepository> _articleRepositoryMock;
 
         public ArticleServiceTests()
         {
@@ -76,7 +76,7 @@ namespace UnitTests.ServicesTests
                 .Returns(new Article());
 
             //Act
-            await _articleService.Create(It.IsAny<ArticleDto>());
+            await _articleService.Create(It.IsAny<ArticleDto>(), It.IsAny<string>());
 
             //Assert
             _unitOfWorkMock.Verify(uow => uow.Articles);

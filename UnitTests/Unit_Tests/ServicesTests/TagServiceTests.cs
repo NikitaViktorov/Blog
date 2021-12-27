@@ -10,14 +10,14 @@ using DAL.Interfaces;
 using Moq;
 using Xunit;
 
-namespace UnitTests.ServicesTests
+namespace Tests.Unit_Tests.ServicesTests
 {
     public class TagServiceTests
     {
-        private readonly TagService _tagService;
         private readonly Mock<IMapper> _mapperMock;
-        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
         private readonly Mock<ITagRepository> _tagRepositoryMock;
+        private readonly TagService _tagService;
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
         public TagServiceTests()
         {
