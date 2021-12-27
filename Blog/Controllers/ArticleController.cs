@@ -85,9 +85,7 @@ namespace Blog.Controllers
         {
             try
             {
-                articleDto.UserId = Guid.Parse(userIdArt);
-
-                await _articleService.Create(articleDto);
+                await _articleService.Create(articleDto, userIdArt);
 
                 return Ok();
             }

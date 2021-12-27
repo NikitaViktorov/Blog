@@ -7,7 +7,7 @@ namespace BLL.Interfaces
 {
     public interface IArticleService
     {
-        Task Create(ArticleDto articleDto);
+        Task Create(ArticleDto articleDto, string userId);
         Task Delete(Guid id);
         Task<ArticleDto> Get(Guid id);
         Task<ICollection<ArticleDto>> GetAll();

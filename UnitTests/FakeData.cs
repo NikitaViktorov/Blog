@@ -3,7 +3,7 @@ using System.Linq;
 using AutoFixture;
 using DAL.Entities;
 
-namespace UnitTests
+namespace Tests
 {
     internal class FakeData
     {

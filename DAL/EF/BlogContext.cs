@@ -28,7 +28,7 @@ namespace DAL.EF
                         x => (Role) Enum.Parse(typeof(Role), x));
             });
 
-            var user = new User
+                        var user = new User
             {
                 Id = Guid.NewGuid(),
                 Email = "Fan@gmail.com",
@@ -47,8 +47,8 @@ namespace DAL.EF
                 Role = Role.Admin
             };
 
-            var tag = new Tag {Id = Guid.NewGuid(), Text = "#MU"};
-            var tag1 = new Tag {Id = Guid.NewGuid(), Text = "#Football"};
+            var tag = new Tag { Id = Guid.NewGuid(), Text = "#MU" };
+            var tag1 = new Tag { Id = Guid.NewGuid(), Text = "#Football" };
 
             var article = new Article
             {
@@ -73,7 +73,7 @@ namespace DAL.EF
             };
 
             var comment = new Comment
-                {Id = Guid.NewGuid(), Text = "MU - The Champions!", ArticleId = article.Id, UserId = user1.Id};
+            { Id = Guid.NewGuid(), Text = "MU - The Champions!", ArticleId = article.Id, UserId = user1.Id };
 
             modelBuilder.Entity<User>().HasData
                 (user, user1);
@@ -90,8 +90,8 @@ namespace DAL.EF
             modelBuilder.Entity<Article>()
                 .HasMany(p => p.Tags)
                 .WithMany(p => p.Articles)
-                .UsingEntity(j => j.HasData(new {ArticlesId = article.Id, TagsId = tag.Id},
-                    new {ArticlesId = article1.Id, TagsId = tag.Id}, new {ArticlesId = article2.Id, TagsId = tag1.Id}));
+                .UsingEntity(j => j.HasData(new { ArticlesId = article.Id, TagsId = tag.Id },
+                    new { ArticlesId = article1.Id, TagsId = tag.Id }, new { ArticlesId = article2.Id, TagsId = tag1.Id }));
         }
     }
 }
