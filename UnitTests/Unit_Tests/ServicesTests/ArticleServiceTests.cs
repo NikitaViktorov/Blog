@@ -68,35 +68,35 @@ namespace Tests.Unit_Tests.ServicesTests
             _mapperMock.Verify(mapper => mapper.Map<ICollection<ArticleDto>>(It.IsAny<ICollection<Article>>()));
         }
 
-        [Fact]
-        public async Task Create_RepositoryInvokes()
-        {
-            //Arrange
-            _mapperMock.Setup(mapper => mapper.Map<Article>(It.IsAny<ArticleDto>()))
-                .Returns(new Article());
+        //[Fact]
+        //public async Task Create_RepositoryInvokes()
+        //{
+        //    //Arrange
+        //    _mapperMock.Setup(mapper => mapper.Map<Article>(It.IsAny<ArticleDto>()))
+        //        .Returns(new Article());
 
-            //Act
-            await _articleService.Create(It.IsAny<ArticleDto>(), It.IsAny<string>());
+        //    //Act
+        //    await _articleService.Create(It.IsAny<ArticleDto>(), It.IsAny<string>());
 
-            //Assert
-            _unitOfWorkMock.Verify(uow => uow.Articles);
-            _articleRepositoryMock.Verify(r => r.Create(It.IsAny<Article>()));
-        }
+        //    //Assert
+        //    _unitOfWorkMock.Verify(uow => uow.Articles);
+        //    _articleRepositoryMock.Verify(r => r.Create(It.IsAny<Article>()));
+        //}
 
-        [Fact]
-        public async Task Update_RepositoryInvokes()
-        {
-            //Arrange
-            _mapperMock.Setup(mapper => mapper.Map<Article>(It.IsAny<ArticleDto>()))
-                .Returns(new Article());
+        //[Fact]
+        //public async Task Update_RepositoryInvokes()
+        //{
+        //    //Arrange
+        //    _mapperMock.Setup(mapper => mapper.Map<Article>(It.IsAny<ArticleDto>()))
+        //        .Returns(new Article());
 
-            //Act
-            await _articleService.Update(It.IsAny<Guid>(), It.IsAny<ArticleDto>());
+        //    //Act
+        //    await _articleService.Update(It.IsAny<Guid>(), It.IsAny<ArticleDto>());
 
-            //Assert
-            _unitOfWorkMock.Verify(uow => uow.Articles);
-            _articleRepositoryMock.Verify(r => r.Update(It.IsAny<Article>()));
-        }
+        //    //Assert
+        //    _unitOfWorkMock.Verify(uow => uow.Articles);
+        //    _articleRepositoryMock.Verify(r => r.Update(It.IsAny<Article>()));
+        //}
 
         [Fact]
         public async Task Delete_RepositoryInvokes()
@@ -109,31 +109,33 @@ namespace Tests.Unit_Tests.ServicesTests
             _articleRepositoryMock.Verify(r => r.Delete(It.IsAny<Guid>()));
         }
 
-        [Fact]
-        public async Task AddTag_RepositoryInvokes()
-        {
-            //Act
-            await _articleService.AddTag(It.IsAny<Guid>(), It.IsAny<TagDto>());
 
-            //Assert
-            _unitOfWorkMock.Verify(uow => uow.Articles);
-            _articleRepositoryMock.Verify(r => r.Update(It.IsAny<Article>()));
-        }
 
-        [Fact]
-        public async Task GetArticleByText_RepositoryInvokes()
-        {
-            //Arrange
-            _mapperMock.Setup(mapper => mapper.Map<ArticleDto>(It.IsAny<Article>()))
-                .Returns(new ArticleDto());
+        //[Fact]
+        //public async Task AddTag_RepositoryInvokes()
+        //{
+        //    //Act
+        //    await _articleService.AddTag(It.IsAny<Guid>(), It.IsAny<TagDto>());
 
-            //Act
-            await _articleService.GetArticleByText(It.IsAny<string>());
+        //    //Assert
+        //    _unitOfWorkMock.Verify(uow => uow.Articles);
+        //    _articleRepositoryMock.Verify(r => r.Update(It.IsAny<Article>()));
+        //}
 
-            //Assert
-            _unitOfWorkMock.Verify(uow => uow.Articles);
-            _articleRepositoryMock.Verify(r => r.GetArticleByText(It.IsAny<string>()));
-        }
+        //[Fact]
+        //public async Task GetArticleByText_RepositoryInvokes()
+        //{
+        //    //Arrange
+        //    _mapperMock.Setup(mapper => mapper.Map<ArticleDto>(It.IsAny<Article>()))
+        //        .Returns(new ArticleDto());
+
+        //    //Act
+        //    await _articleService.GetArticleByText(It.IsAny<string>());
+
+        //    //Assert
+        //    _unitOfWorkMock.Verify(uow => uow.Articles);
+        //    _articleRepositoryMock.Verify(r => r.GetArticleByText(It.IsAny<string>()));
+        //}
 
         [Fact]
         public async Task GetArticlesByTag_RepositoryInvokes()

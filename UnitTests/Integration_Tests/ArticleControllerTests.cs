@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,22 +39,69 @@ namespace Tests.Integration_Tests
         }
 
         [Fact]
-        public async Task Post_ShouldCreateNewArticle()
+        public async Task GetById_UserDoesntExist_ShouldReturn_NotFound()
         {
-            //Arrange
-            var fixture = new FakeData();
-            var fakeArticle = _mapper.Map<ArticleDto>(fixture.Articles.First());
-            var fakeArticleJson = JsonConvert.SerializeObject(fakeArticle);
-            var userId = _fixture.DbContext.Users.First().Id.ToString();
-            var httpContent = new StringContent(fakeArticleJson, Encoding.UTF8, "application/json");
-
             //Act
-            var response = await _fixture.Client.PostAsync("api/Article/CreateArticle/" + userId, httpContent);
-            response.EnsureSuccessStatusCode();
+            var response = await _fixture.Client.GetAsync($"api/Tag/GetTag/{Guid.NewGuid()}");
 
             // Assert
-            Assert.Contains(_fixture.DbContext.Articles, article => article.Text == fakeArticle.Text);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
+
+        [Fact]
+        public async Task Get_ShouldReturnTagResult()
+        {
+            // Act
+            var response = await _fixture.Client.GetAsync("api/Tag");
+            response.EnsureSuccessStatusCode();
+            var models =
+                JsonConvert.DeserializeObject<ICollection<Tag>>(await response.Content.ReadAsStringAsync());
+
+            // Assert
+            Assert.NotEmpty(models);
+        }
+
+
+        [Fact]
+        public async Task Get_ShouldReturnListCommentsResult()
+        {
+            // Act
+            var response = await _fixture.Client.GetAsync($"api/Comment");
+            response.EnsureSuccessStatusCode();
+            var models =
+                JsonConvert.DeserializeObject<ICollection<Comment>>(await response.Content.ReadAsStringAsync());
+
+            // Assert
+            Assert.NotEmpty(models);
+        }
+
+        [Fact]
+        public async Task Get_ShouldReturnByIdResult()
+        {
+            // Act
+            var response = await _fixture.Client.GetAsync($"api/User/{Guid.NewGuid()}");
+
+            // Assert
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        //[Fact]
+        //public async Task Post_ShouldCreateNewArticle()
+        //{
+        //    //Arrange
+        //    var fixture = new FakeData();
+        //    var fakeArticle = _mapper.Map<ArticleDto>(fixture.Articles.First());
+        //    var fakeArticleJson = JsonConvert.SerializeObject(fakeArticle);
+        //    var userId = _fixture.DbContext.Users.First().Id.ToString();
+        //    var httpContent = new StringContent(fakeArticleJson, Encoding.UTF8, "application/json");
+
+        //    //Act
+        //    var response = await _fixture.Client.PostAsync("api/Article/CreateArticle/" + userId, httpContent);
+        //    response.EnsureSuccessStatusCode();
+
+        //    // Assert
+        //    Assert.Contains(_fixture.DbContext.Articles, article => article.Text == fakeArticle.Text);
+        //}
 
         //[Fact]
         //public async Task Get_ShouldGetUserArticles()

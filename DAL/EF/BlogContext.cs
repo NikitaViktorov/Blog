@@ -10,7 +10,7 @@ namespace DAL.EF
         public BlogContext(DbContextOptions<BlogContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+
         }
 
         public DbSet<Article> Articles { get; set; }
